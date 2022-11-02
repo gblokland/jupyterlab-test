@@ -6,8 +6,8 @@ WORKDIR /root
 
 RUN apt-get update && \
     apt-get install -y wget vim rsync git tree tk build-essential pkg-config bash-completion bc && \
-    apt-get install -y r-base r-base-core r-recommended r-base-dev && \
-    #apt install -y --no-install-recommends r-base-core=${VERSION} r-base-html=${VERSION} r-doc-html=${VERSION} r-base-dev=${VERSION} && \
+    #apt-get install -y r-base r-base-core r-recommended r-base-dev && \
+    apt install -y --no-install-recommends r-base-core=4.1.2-1ubuntu2 r-base-html=4.1.2-1ubuntu2 r-doc-html=4.1.2-1ubuntu2 r-base-dev=4.1.2-1ubuntu2 && \
     apt-get install -y libxml2-dev zlib1g-dev libudunits2-dev libgdal-dev libfontconfig1-dev libcairo2-dev libgsl-dev libv8-dev libmagick++-dev liblapack-dev libblas-dev && \
     apt-get install -y libharfbuzz-dev libfribidi-dev && \
     apt-get install -y python3-pip python3-dev && pip3 install --upgrade pip && \
