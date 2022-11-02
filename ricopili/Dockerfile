@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt-get install -y wget vim rsync git tree tk build-essential pkg-config bash-completion r-base r-base-dev bc && \
     apt-get install -y libxml2-dev zlib1g-dev libudunits2-dev libgdal-dev libfontconfig1-dev libcairo2-dev libgsl-dev libv8-dev libmagick++-dev liblapack-dev libblas-dev && \
     apt-get install -y python3-pip python3-dev && \
-    pip install notebook jupyterlab
+    pip3 install notebook jupyterlab
 
 #RUN R -e "install.packages(c('rJava','devtools','digest', 'dplyr','futile.logger','RJDBC', 'yaml', 'purrr','lubridate', 'testthat','noctua'), dependencies = TRUE)"
 #RUN R -e "devtools::install_github('DyfanJones/noctua')"
