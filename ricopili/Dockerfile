@@ -7,7 +7,7 @@ WORKDIR /root
 RUN apt-get update && \
     apt-get install -y wget vim rsync git tree tk build-essential pkg-config bash-completion r-base r-base-dev bc && \
     apt-get install -y libxml2-dev zlib1g-dev libudunits2-dev libgdal-dev libfontconfig1-dev libcairo2-dev libgsl-dev libv8-dev libmagick++-dev liblapack-dev libblas-dev && \
-    apt-get install -y python3-pip python3-dev && pip install --upgrade pip && \
+    apt-get install -y python3-pip python3-dev && pip3 install --upgrade pip && \
     pip3 install notebook jupyterlab
 
 #RUN R -e "install.packages(c('rJava','digest', 'futile.logger','RJDBC', 'yaml', 'purrr','testthat','noctua'), dependencies = TRUE)"
