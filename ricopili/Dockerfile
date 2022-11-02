@@ -6,9 +6,7 @@ WORKDIR /root
 
 RUN apt-get update && \
     apt-get install -y wget vim rsync git tree tk build-essential pkg-config bash-completion bc sudo gpg && \
-    apt-get install -y --no-install-recommends r-base && \
-    wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo gpg --dearmor -o /usr/share/keyrings/r-project.gpg && \
-    #echo "deb [signed-by=/usr/share/keyrings/r-project.gpg] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" | sudo tee -a /etc/apt/sources.list.d/r-project.list && \
+    #apt-get install -y --no-install-recommends r-base && \
     #apt-get install -y r-base r-base-core r-recommended r-base-dev && \
     #apt-get install -y --no-install-recommends r-base-core=4.1.2-1ubuntu2 r-base-html=4.1.2-1ubuntu2 r-doc-html=4.1.2-1ubuntu2 r-base-dev=4.1.2-1ubuntu2 && \
     apt-get install -y libxml2-dev zlib1g-dev libudunits2-dev libgdal-dev libfontconfig1-dev libcairo2-dev libgsl-dev libv8-dev libmagick++-dev liblapack-dev libblas-dev && \
@@ -18,7 +16,9 @@ RUN apt-get update && \
 
 #'mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars', 
 
-RUN R -e "install.packages(c('BiocManager', 'corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'devtools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org', lib='/ricopili/dependencies/R_packages')"
+FROM rocker/rstudio:4.0.0
+
+RUN R -e "install.packages(c('BiocManager', 'corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'devtools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org', lib='/ricopili/dependencies/R_packages')"
 #Sys.unsetenv("GITHUB_PAT")
 RUN R -e "devtools::install_github('DudbridgeLab/avengeme')"
 RUN R -e "devtools::install_github('MathiasHarrer/dmetar')"
