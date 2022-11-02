@@ -19,8 +19,9 @@ RUN apt-get update && \
 FROM rocker/rstudio:4.0.0
 
 #, lib='/ricopili/dependencies/R_packages'
+#RUN R -e "install.packages(c('BiocManager', 'corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'devtools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
 
-RUN R -e "install.packages(c('BiocManager', 'corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'devtools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
+RUN R -e "install.packages(c('BiocManager', 'devtools'), repos='https://cloud.r-project.org')"
 #Sys.unsetenv("GITHUB_PAT")
 RUN R -e "devtools::install_github('DudbridgeLab/avengeme')"
 RUN R -e "devtools::install_github('MathiasHarrer/dmetar')"
@@ -32,6 +33,10 @@ RUN R -e "devtools::install_github('https://github.com/josefin-werme/LAVA.git')"
 RUN R -e "devtools::install_github('merns/postgwas')"
 RUN R -e "devtools::install_github('MRCIEU/TwoSampleMR')"
 RUN R -e "devtools::install_github('ozancinar/poolR')"
+RUN R -e "BiocManager::install('ASSET')"
+RUN R -e "BiocManager::install('gwascat')"
+RUN R -e "BiocManager::install('snpStats')"
+
 #RUN R -e "install.packages('cmutils', repos =NULL, type='source')"
 
 ENV PATH=/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
