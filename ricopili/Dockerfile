@@ -5,7 +5,7 @@ LABEL org.opencontainers.image.source="https://github.com/gblokland/jupyterlab"
 WORKDIR /root
 
 RUN apt-get update && \
-    apt-get install -y wget vim rsync git tree tk build-essential pkg-config bash-completion bc && \
+    apt-get install -y wget vim rsync git tree tk build-essential pkg-config bash-completion bc sudo && \
     apt-get install -y --no-install-recommends r-base && \
     wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo gpg --dearmor -o /usr/share/keyrings/r-project.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/r-project.gpg] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" | sudo tee -a /etc/apt/sources.list.d/r-project.list && \
