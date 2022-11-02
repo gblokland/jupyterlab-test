@@ -11,18 +11,18 @@ RUN apt-get update && \
     pip3 install notebook jupyterlab
 
 #RUN R -e "install.packages(c('digest', 'futile.logger','RJDBC', 'yaml', 'purrr','testthat','noctua'), dependencies = TRUE)"
-RUN R -e "install.packages(c("BiocManager", "corrgram", "corrplot", "d3heatmap", "data.table", "DescTools", "devtools", "doBy", "dplyr", "extrafont", "extrafontdb", "foreign", "forestplot", "forestploter", "gdata", "ggcorrplot", "ggplot2", "gtools", "haven", "igraph", "jpeg", "lattice", "LAVA", "lubridate", "meta", "metafor", "mvoutlier", "OpenMx", "pheatmap", "plyr", "png", "psych", "qqman", "randomForest", "RColorBrewer", "readxl", "rJava", "rmarkdown", "rsq", "scatterplot3d", "scales", "sem", "semTools", "stringr", "sysfonts", "systemfonts", "tibble", "tidyr", "ukbtools", "VennDiagram", "viridis", "viridisLite", "vroom", "writexl", "WriteXLS", "xlsx", "xlsxjars", "xtable"), repos="https://cloud.r-project.org", lib="/ricopili/dependencies/R_packages")"
+RUN R -e "install.packages(c('BiocManager', 'corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'devtools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'mvoutlier', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'qqman', 'randomForest', 'RColorBrewer', 'readxl', 'rJava', 'rmarkdown', 'rsq', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xlsx', 'xlsxjars', 'xtable'), repos='https://cloud.r-project.org', lib='/ricopili/dependencies/R_packages')"
 #Sys.unsetenv("GITHUB_PAT")
-RUN R -e "devtools::install_github("DudbridgeLab/avengeme")"
-RUN R -e "devtools::install_github("MathiasHarrer/dmetar")"
-RUN R -e "devtools::install_github("kassambara/easyGgplot2")"
-RUN R -e "devtools::install_github("ramiromagno/gwasrapidd")"
-RUN R -e "devtools::install_github("https://github.com/josefin-werme/LAVA.git")"
+RUN R -e "devtools::install_github('DudbridgeLab/avengeme')"
+RUN R -e "devtools::install_github('MathiasHarrer/dmetar')"
+RUN R -e "devtools::install_github('kassambara/easyGgplot2')"
+RUN R -e "devtools::install_github('ramiromagno/gwasrapidd')"
+RUN R -e "devtools::install_github('https://github.com/josefin-werme/LAVA.git')"
 #Install postgwas from GitHub via devtools:
 #setRepositories(ind = 1:6)
-RUN R -e "devtools::install_github("merns/postgwas")"
-RUN R -e "devtools::install_github("MRCIEU/TwoSampleMR")"
-RUN R -e "devtools::install_github("ozancinar/poolR")"
+RUN R -e "devtools::install_github('merns/postgwas')"
+RUN R -e "devtools::install_github('MRCIEU/TwoSampleMR')"
+RUN R -e "devtools::install_github('ozancinar/poolR')"
 #RUN R -e "install.packages('cmutils', repos =NULL, type='source')"
 
 ENV PATH=/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
