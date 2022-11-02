@@ -35,4 +35,4 @@ ENV PATH=/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopi
 EXPOSE 8888
 ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
 
-# CMD ["/bin/bash"]
+CMD ["/bin/bash"]
