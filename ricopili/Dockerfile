@@ -10,9 +10,8 @@ RUN apt-get update && \
     apt-get install -y python3-pip python3-dev && pip3 install --upgrade pip && \
     pip3 install notebook jupyterlab
 
-#RUN R -e "install.packages(c('rJava','digest', 'futile.logger','RJDBC', 'yaml', 'purrr','testthat','noctua'), dependencies = TRUE)"
-#RUN R -e "install.packages(c("BiocManager", "corrgram", "corrplot", "d3heatmap", "data.table", "DescTools", "devtools", "doBy", "dplyr", "extrafont", "extrafontdb", "foreign", "forestplot", "forestploter", "gdata", "ggcorrplot", "ggplot2", "gtools", "haven", "igraph", "jpeg", "lattice", "LAVA", "lubridate", "meta", "metafor", "mvoutlier", "OpenMx", "pheatmap", "plyr", "png", "psych", "qqman", "randomForest", "RColorBrewer", "readxl", "rmarkdown", "rsq", "scatterplot3d", "scales", "sem", "semTools", "stringr", "sysfonts", "systemfonts", "tibble", "tidyr", "ukbtools", "VennDiagram", "viridis", "viridisLite", "vroom", "writexl", "WriteXLS", "xlsx", "xlsxjars", "xtable"), repos="https://cloud.r-project.org", lib="/ricopili/dependencies/R_packages")"
-#RUN R -e "devtools::install_github('DyfanJones/noctua')"
+#RUN R -e "install.packages(c('digest', 'futile.logger','RJDBC', 'yaml', 'purrr','testthat','noctua'), dependencies = TRUE)"
+RUN R -e "install.packages(c("BiocManager", "corrgram", "corrplot", "d3heatmap", "data.table", "DescTools", "devtools", "doBy", "dplyr", "extrafont", "extrafontdb", "foreign", "forestplot", "forestploter", "gdata", "ggcorrplot", "ggplot2", "gtools", "haven", "igraph", "jpeg", "lattice", "LAVA", "lubridate", "meta", "metafor", "mvoutlier", "OpenMx", "pheatmap", "plyr", "png", "psych", "qqman", "randomForest", "RColorBrewer", "readxl", "rJava", "rmarkdown", "rsq", "scatterplot3d", "scales", "sem", "semTools", "stringr", "sysfonts", "systemfonts", "tibble", "tidyr", "ukbtools", "VennDiagram", "viridis", "viridisLite", "vroom", "writexl", "WriteXLS", "xlsx", "xlsxjars", "xtable"), repos="https://cloud.r-project.org", lib="/ricopili/dependencies/R_packages")"
 #Sys.unsetenv("GITHUB_PAT")
 RUN R -e "devtools::install_github("DudbridgeLab/avengeme")"
 RUN R -e "devtools::install_github("MathiasHarrer/dmetar")"
