@@ -1,19 +1,16 @@
 FROM bruggerk/ricopili:latest
 
-LABEL org.opencontainers.image.source="https://github.com/MaastrichtU-IDS/jupyterlab"
+LABEL org.opencontainers.image.source="https://github.com/gblokland/jupyterlab"
 
 WORKDIR /root
 
 RUN apt-get update && \
+    apt-get install wget vim rsync git build-essential r-base r-base-dev && \
+    apt-get install -y bc && \
+    apt-get install libxml2-dev zlib1g-dev pkg-config libudunits2-dev libgdal-dev libfontconfig1-dev libcairo2-dev libgsl-dev libv8-dev tk libmagick++-dev && \
+    apt-get install bash-completion && apt-get install bind && apt-get install liblapack-dev libblas-dev && apt-get install tree && \
     apt-get install -y python3-pip python3-dev && \
-    pip3 install notebook jupyterlab && \
-    apt-get install wget && apt-get install vim && apt-get install rsync && apt-get install build-essential && \
-    apt-get install r-base r-base-dev && \
-    apt-get install -y bc && apt-get install git && apt-get install libxml2-dev && \
-    apt-get install zlib1g-dev && apt-get install pkg-config && apt-get install libudunits2-dev && \
-    apt-get install libgdal-dev && apt-get install libfontconfig1-dev && apt-get install libcairo2-dev && \
-    apt-get install libgsl-dev && apt-get install libv8-dev && apt-get install tk && apt-get install libmagick++-dev && \
-    apt-get install bash-completion && apt-get install bind && apt-get install liblapack-dev libblas-dev && apt-get install tree
+    pip3 install notebook jupyterlab
 
 /bin/sh -c Rscript -e 'install.packages("corrgram", repos="https://cloud.r-project.org", lib="/ricopili/dependencies/R_packages")'
 /bin/sh -c Rscript -e 'install.packages("corrplot", repos="https://cloud.r-project.org", lib="/ricopili/dependencies/R_packages")'
