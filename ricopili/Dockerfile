@@ -66,7 +66,7 @@ RUN git clone https://github.com/fhormoz/caviar.git /tmp/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm -r /tmp/caviar   
 RUN git clone https://github.com/gkichaev/PAINTOR_V3.0.git /tmp/ && \
-	cd /tmp/PAINTOR_V3.0 && bash install.sh && \
+    cd /tmp/PAINTOR_V3.0 && bash install.sh && \
     cp -r /tmp/PAINTOR_V3.0 /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm -r /tmp/PAINTOR_V3.0 
@@ -100,9 +100,9 @@ RUN curl -Lo /tmp/PRSice_2.3.5.zip https://github.com/choishingwan/PRSice/releas
 #MiXeR - (was MATLAB and) Python-based 
 RUN git clone --recurse-submodules -j8 https://github.com/precimed/mixer.git /tmp/ && \
     mkdir mixer/src/build && cd mixer/src/build && \
-    cmake .. && make bgmg -j16                                   # if you use GCC compiler
-    #CC=icc CXX=icpc cmake .. && make bgmg -j16                   # if you use Intel compiler
-    #cmake .. -DBOOST_ROOT=$HOME/boost_1_69_0 && make bgmg -j16   # if you use locally compiled boost
+    cmake .. && make bgmg -j16 && \                                # if you use GCC compiler
+    #CC=icc CXX=icpc cmake .. && make bgmg -j16 && \                # if you use Intel compiler
+    #cmake .. -DBOOST_ROOT=$HOME/boost_1_69_0 && make bgmg -j16 && \  # if you use locally compiled boost
     cp -r /tmp/mixer /ricopili/dependencies/ 
 #pleiofdr - MATLAB and Python-based
 RUN git clone https://github.com/precimed/pleiofdr.git /tmp/ && \
