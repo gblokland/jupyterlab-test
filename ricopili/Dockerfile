@@ -25,7 +25,7 @@ FROM rocker/rstudio:4.0.0
 #, lib='/ricopili/dependencies/R_packages'
 #, lib='/usr/local/lib/R/site-library'
 #'mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars', 
-#RUN R -e "install.packages(c('BiocManager', 'corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'devtools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
+#RUN R -e "install.packages(c(corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
 
 RUN R -e "install.packages(c('BiocManager', 'devtools'), repos='https://cloud.r-project.org')"
 #Sys.unsetenv("GITHUB_PAT")
