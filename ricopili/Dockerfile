@@ -6,8 +6,8 @@ WORKDIR /root
 
 RUN apt-get update && \
     apt-get install -y wget vim rsync git tree tk build-essential pkg-config bash-completion bc sudo gpg && \
-    which pkg-config && \
-    ls $PKG_CONFIG_PATH && \
+    #which pkg-config && \
+    #ls $PKG_CONFIG_PATH && \
     apt-get install -y libxml2-dev zlib1g-dev libudunits2-dev libgdal-dev libfontconfig1-dev libcairo2-dev libgsl-dev libv8-dev libmagick++-dev && \
     apt-get install -y liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev && \
     apt-get install -y python3-pip python3-dev && pip3 install --upgrade pip && \
