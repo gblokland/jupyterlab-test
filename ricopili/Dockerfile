@@ -29,6 +29,7 @@ FROM rocker/rstudio:4.0.0
 
 RUN Rscript -e 'install.packages(c("BiocManager", "devtools"), repos="https://cloud.r-project.org", lib="/ricopili/dependencies/R_packages")'
 #Sys.unsetenv("GITHUB_PAT")
+RUN R -e 'devtools::install_github("kenhanscombe/ukbtools", dependencies = TRUE)'
 RUN R -e "devtools::install_github('DudbridgeLab/avengeme')"
 RUN R -e "devtools::install_github('MathiasHarrer/dmetar')"
 RUN R -e "devtools::install_github('kassambara/easyGgplot2')"
