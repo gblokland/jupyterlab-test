@@ -95,8 +95,10 @@ RUN curl -Lo /tmp/PRSice_2.3.5.zip https://github.com/choishingwan/PRSice/releas
     unzip /tmp/PRSice_2.3.5.zip -C /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm /tmp/PRSice_2.3.5.zip
-    
-#mach: http://csg.sph.umich.edu/abecasis/MaCH/download/mach.1.0.18.Linux.tgz
+RUN curl -Lo /tmp/mach_1.0.18.tgz http://csg.sph.umich.edu/abecasis/MaCH/download/mach.1.0.18.Linux.tgz && \
+    tar zxvf /tmp/mach_1.0.18.tgz -C /ricopili/dependencies/ && \
+    chmod 755 /ricopili/dependencies/ && \
+    rm /tmp/mach_1.0.18.tgz
 
 #MiXeR - (was MATLAB and) Python-based 
 RUN git clone --recurse-submodules -j8 https://github.com/precimed/mixer.git /tmp/ && \
@@ -123,7 +125,7 @@ RUN git clone https://github.com/precimed/mostest.git /tmp/ && \
 #Original dependencies
 ENV PATH=/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
 #Added by me
-ENV PATH=/ricopili/dependencies/bedtools-2.30.0:/ricopili/dependencies/vcftools:/ricopili/dependencies/caviar:/ricopili/dependencies/PAINTOR_V3.0:/ricopili/dependencies/gcta-1.94.1:/ricopili/dependencies/locuszoom_1.3:/ricopili/dependencies/finemap_v1.1:/ricopili/dependencies/magma_v1.10:/ricopili/dependencies/annovar:/ricopili/dependencies/pleiofdr:/ricopili/dependencies/mixer:/ricopili/dependencies/mostest:$PATH
+ENV PATH=/ricopili/dependencies/bedtools-2.30.0:/ricopili/dependencies/vcftools:/ricopili/dependencies/caviar:/ricopili/dependencies/PAINTOR_V3.0:/ricopili/dependencies/gcta-1.94.1:/ricopili/dependencies/locuszoom_1.3:/ricopili/dependencies/finemap_v1.1:/ricopili/dependencies/magma_v1.10:/ricopili/dependencies/annovar:/ricopili/dependencies/PRSice_2.3.5:/ricopili/dependencies/mach_1.0.18:/ricopili/dependencies/pleiofdr:/ricopili/dependencies/mixer:/ricopili/dependencies/mostest:$PATH
 
 EXPOSE 8888
 ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
