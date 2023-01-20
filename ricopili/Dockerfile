@@ -44,8 +44,10 @@ RUN R -e "BiocManager::install('gwascat')"
 RUN R -e "BiocManager::install('snpStats')"
 
 #SAIGE is an R package with Scalable and Accurate Implementation of Generalized mixed model (Chen, H. et al. 2016). It accounts for sample relatedness and is feasible for genetic association tests in large cohorts and biobanks (N > 400,000).
+RUN R -e 'devtools::install_github("leeshawn/MetaSKAT")'
+RUN R -e 'devtools::install_github("weizhouUMICH/SAIGE")'
 
-#LDpred: You can install LDpred and its dependencies in R with the following command:
+#LDpred - R-based
 RUN R -e 'devtools::install_github("https://github.com/privefl/bigsnpr.git")'
 
 #Added by me
