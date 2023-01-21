@@ -20,6 +20,9 @@ RUN apt-get update && \
 ENV PKG_CONFIG_PATH=/usr/bin:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig 
 ENV PATH=/usr/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
 
+RUN mkdir -p /ricopili/dependencies/R_packages && \
+    chmod -R 755 /ricopili/dependencies/R_packages
+
 FROM rocker/rstudio:4.0.0
 
 #, lib='/ricopili/dependencies/R_packages'
