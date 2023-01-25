@@ -30,6 +30,9 @@ RUN sudo apt install -y python3-pip python3-dev && pip3 install --upgrade pip &&
 
 #For debugging: if errors occur that complain about not being able to find {package}.pc files, check this list if they are there:
 RUN ls /usr/lib/x86_64-linux-gnu/pkgconfig/
+RUN ls /usr/lib/pkgconfig/
+RUN cp /usr/lib/x86_64-linux-gnu/pkgconfig/*.pc /usr/lib/pkgconfig/
+RUN ls /usr/lib/pkgconfig/
 
 ENV PATH=/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
 
@@ -40,8 +43,6 @@ FROM rocker/rstudio:4.0.0
 
 #, lib='/ricopili/dependencies/R_packages'
 #, lib='/usr/local/lib/R/site-library'
-#'mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars', 
-#RUN R -e "install.packages(c(corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
 
 RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'  # create personal library
 RUN Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'  # add to the path
@@ -73,3 +74,6 @@ RUN Rscript -e 'install.packages(c("BiocManager"), repos="https://cloud.r-projec
 RUN Rscript -e "BiocManager::install('ASSET')"
 RUN Rscript -e "BiocManager::install('gwascat')"
 RUN Rscript -e "BiocManager::install('snpStats')"
+
+#'mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars', 
+#RUN Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
