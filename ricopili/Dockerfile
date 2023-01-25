@@ -49,13 +49,18 @@ FROM rocker/rstudio:4.0.0
 RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'  # create personal library
 RUN Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'  # add to the path
 
-RUN Rscript -e 'install.packages("xml2", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
-RUN Rscript -e 'install.packages("systemfonts", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
-RUN Rscript -e 'install.packages("httpuv", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
+RUN Rscript -e 'install.packages(c("remotes"), repos="https://cloud.r-project.org")'
+RUN Rscript -e 'remotes::install_github("r-lib/xml2")'
+RUN Rscript -e 'remotes::install_github("r-lib/systemfonts")'
+RUN Rscript -e 'remotes::install_github("rstudio/httpuv")'
+
+#RUN Rscript -e 'install.packages("xml2", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
+#RUN Rscript -e 'install.packages("systemfonts", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
+#RUN Rscript -e 'install.packages("httpuv", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 #RUN Rscript -e 'install.packages("devtools", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 
 #Sys.unsetenv("GITHUB_PAT")
-RUN Rscript -e 'install.packages(c("remotes", "devtools"), repos="https://cloud.r-project.org")'
+#RUN Rscript -e 'install.packages(c("remotes", "devtools"), repos="https://cloud.r-project.org")'
 #RUN Rscript -e 'remotes::install_github("kenhanscombe/ukbtools", dependencies = TRUE)'
 #RUN Rscript -e "remotes::install_github('DudbridgeLab/avengeme')"
 #RUN Rscript -e "remotes::install_github('MathiasHarrer/dmetar')"
