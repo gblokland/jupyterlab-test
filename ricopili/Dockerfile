@@ -33,29 +33,28 @@ FROM rocker/rstudio:4.0.0
 RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'  # create personal library
 RUN Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'  # add to the path
 
-RUN Rscript -e 'install.packages(c("BiocManager", "devtools"), repos="https://cloud.r-project.org")'
+RUN Rscript -e 'install.packages(c("BiocManager", "remotes", "devtools"), repos="https://cloud.r-project.org")'
 #Sys.unsetenv("GITHUB_PAT")
-RUN R -e 'devtools::install_github("kenhanscombe/ukbtools", dependencies = TRUE)'
-RUN R -e "devtools::install_github('DudbridgeLab/avengeme')"
-RUN R -e "devtools::install_github('MathiasHarrer/dmetar')"
-RUN R -e "devtools::install_github('kassambara/easyGgplot2')"
-RUN R -e "devtools::install_github('ramiromagno/gwasrapidd')"
-RUN R -e "devtools::install_github('https://github.com/josefin-werme/LAVA.git')"
+RUN Rscript -e 'remotes::install_github("kenhanscombe/ukbtools", dependencies = TRUE)'
+RUN Rscript -e "remotes::install_github('DudbridgeLab/avengeme')"
+RUN Rscript -e "remotes::install_github('MathiasHarrer/dmetar')"
+RUN Rscript -e "remotes::install_github('kassambara/easyGgplot2')"
+RUN Rscript -e "remotes::install_github('ramiromagno/gwasrapidd')"
+RUN Rscript -e "remotes::install_github('https://github.com/josefin-werme/LAVA.git')"
 #Install postgwas from GitHub via devtools:
 #setRepositories(ind = 1:6)
-RUN R -e "devtools::install_github('merns/postgwas')"
-RUN R -e "devtools::install_github('MRCIEU/TwoSampleMR')"
-RUN R -e "devtools::install_github('ozancinar/poolR')"
-RUN R -e "BiocManager::install('ASSET')"
-RUN R -e "BiocManager::install('gwascat')"
-RUN R -e "BiocManager::install('snpStats')"
-
 #SAIGE is an R package with Scalable and Accurate Implementation of Generalized mixed model (Chen, H. et al. 2016). It accounts for sample relatedness and is feasible for genetic association tests in large cohorts and biobanks (N > 400,000).
-RUN R -e 'devtools::install_github("leeshawn/MetaSKAT")'
-RUN R -e 'devtools::install_github("weizhouUMICH/SAIGE")'
-
+RUN Rscript -e 'remotes::install_github("leeshawn/MetaSKAT")'
+RUN Rscript -e 'remotes::install_github("weizhouUMICH/SAIGE")'
 #LDpred - R-based
-RUN R -e 'devtools::install_github("https://github.com/privefl/bigsnpr.git")'
+RUN Rscript -e 'remotes::install_github("https://github.com/privefl/bigsnpr.git")'
+RUN Rscript -e "remotes::install_github('merns/postgwas')"
+RUN Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')"
+RUN Rscript -e "remotes::install_github('ozancinar/poolR')"
+RUN Rscript -e "BiocManager::install('ASSET')"
+RUN Rscript -e "BiocManager::install('gwascat')"
+RUN Rscript -e "BiocManager::install('snpStats')"
+
 
 #Added by me
 RUN curl -Lo /tmp/bedtools-2.30.0.tgz https://github.com/arq5x/bedtools2/releases/download/v2.30.0/bedtools-2.30.0.tar.gz && \
