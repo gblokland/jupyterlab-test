@@ -5,7 +5,8 @@ LABEL org.opencontainers.image.source="https://github.com/gblokland/jupyterlab"
 WORKDIR /root
 
 RUN apt-get update && \
-    apt-get install -y pkg-config wget vim rsync git tree tk build-essential bash-completion bc sudo gpg && \
+    apt-get install -y sudo && \
+    sudo apt-get install -y pkg-config wget vim rsync git tree tk build-essential bash-completion bc gpg && \
     sudo apt-get install -y zlib1g-dev libudunits2-dev libgdal-dev libcairo2-dev libgsl-dev libv8-dev libmagick++-dev && \
     sudo apt-get install -y liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libcurl4-openssl-dev libssl-dev libbz2-dev liblzma-dev && \
     sudo apt-get install -y libxml2-dev libfontconfig1-dev
