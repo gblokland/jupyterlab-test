@@ -30,7 +30,10 @@ FROM rocker/rstudio:4.0.0
 #'mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars', 
 #RUN R -e "install.packages(c(corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
 
-RUN Rscript -e 'install.packages(c("BiocManager", "devtools"), repos="https://cloud.r-project.org", lib="/ricopili/dependencies/R_packages")'
+RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'  # create personal library
+RUN Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'  # add to the path
+
+RUN Rscript -e 'install.packages(c("BiocManager", "devtools"), repos="https://cloud.r-project.org")'
 #Sys.unsetenv("GITHUB_PAT")
 RUN R -e 'devtools::install_github("kenhanscombe/ukbtools", dependencies = TRUE)'
 RUN R -e "devtools::install_github('DudbridgeLab/avengeme')"
