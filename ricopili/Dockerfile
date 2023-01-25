@@ -23,7 +23,7 @@ RUN sudo apt install -y python3-pip python3-dev && pip3 install --upgrade pip &&
     #apt-get install -y r-base r-base-core r-recommended r-base-dev && \
     #apt-get install -y --no-install-recommends r-base-core=4.1.2-1ubuntu2 r-base-html=4.1.2-1ubuntu2 r-doc-html=4.1.2-1ubuntu2 r-base-dev=4.1.2-1ubuntu2 && \
 
-RUN ls $PKG_CONFIG_PATH
+RUN ls /usr/lib/x86_64-linux-gnu/pkgconfig/
 
 ENV PATH=/usr/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
 RUN mkdir -p /ricopili/dependencies/R_packages && \
