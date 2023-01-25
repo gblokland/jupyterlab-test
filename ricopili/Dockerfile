@@ -48,7 +48,6 @@ FROM rocker/rstudio:4.0.0
 
 RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'  # create personal library
 RUN Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'  # add to the path
-RUN apt install r-cran-devtools
 
 RUN Rscript -e 'install.packages("xml2", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 RUN Rscript -e 'install.packages("systemfonts", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
