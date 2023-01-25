@@ -4,16 +4,17 @@ LABEL org.opencontainers.image.source="https://github.com/gblokland/jupyterlab"
 
 WORKDIR /root
 
-RUN apt-get update && \
-    apt-get install -y sudo && \
-    sudo apt-get install -y pkg-config wget vim rsync git tree tk build-essential bash-completion bc gpg && \
-    sudo apt-get install -y zlib1g-dev libudunits2-dev libgdal-dev libcairo2-dev libgsl-dev libv8-dev libmagick++-dev && \
-    sudo apt-get install -y liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libcurl4-openssl-dev libssl-dev libbz2-dev liblzma-dev && \
-    sudo apt-get install -y libxml2-dev libfontconfig1-dev
+RUN apt update && \
+    apt install -y sudo && \
+    sudo apt install -y pkg-config wget vim rsync git tree tk build-essential bash-completion bc gpg && \
+    sudo apt install -y zlib1g-dev libudunits2-dev libgdal-dev libcairo2-dev libgsl-dev libv8-dev libmagick++-dev && \
+    sudo apt install -y liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libcurl4-openssl-dev libssl-dev libbz2-dev liblzma-dev && \
+    sudo apt install -y libxml2-dev libfontconfig1-dev
     
-RUN apt-get install -y python3-pip python3-dev && pip3 install --upgrade pip && \
+RUN sudo apt install -y python3-pip python3-dev && pip3 install --upgrade pip && \
     pip3 install notebook jupyterlab
 
+#RUN apt-get update && \
     #apt-get install -y --no-install-recommends r-base && \
     #apt-get install -y r-base r-base-core r-recommended r-base-dev && \
     #apt-get install -y --no-install-recommends r-base-core=4.1.2-1ubuntu2 r-base-html=4.1.2-1ubuntu2 r-doc-html=4.1.2-1ubuntu2 r-base-dev=4.1.2-1ubuntu2 && \
@@ -35,5 +36,26 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'  # crea
 RUN Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'  # add to the path
 #RUN Rscript -e 'install.packages("devtools", configure.vars=c("LIB_DIR='/usr/local/lib/R/site-library -L/my/lib/dir2' INCLUDE_DIR='/my/include/dir1 -I/my/include/dir2'"), repos="https://cloud.r-project.org")'
 
-RUN Rscript -e 'install.packages(c("BiocManager", "remotes", "devtools"), repos="https://cloud.r-project.org")'
 #Sys.unsetenv("GITHUB_PAT")
+RUN Rscript -e 'install.packages(c("remotes", "devtools"), repos="https://cloud.r-project.org")'
+RUN Rscript -e 'remotes::install_github("kenhanscombe/ukbtools", dependencies = TRUE)'
+RUN Rscript -e "remotes::install_github('DudbridgeLab/avengeme')"
+RUN Rscript -e "remotes::install_github('MathiasHarrer/dmetar')"
+RUN Rscript -e "remotes::install_github('kassambara/easyGgplot2')"
+RUN Rscript -e "remotes::install_github('ramiromagno/gwasrapidd')"
+RUN Rscript -e "remotes::install_github('https://github.com/josefin-werme/LAVA.git')"
+#Install postgwas from GitHub via devtools:
+#setRepositories(ind = 1:6)
+#SAIGE is an R package with Scalable and Accurate Implementation of Generalized mixed model (Chen, H. et al. 2016). It accounts for sample relatedness and is feasible for genetic association tests in large cohorts and biobanks (N > 400,000).
+RUN Rscript -e 'remotes::install_github("leeshawn/MetaSKAT")'
+RUN Rscript -e 'remotes::install_github("weizhouUMICH/SAIGE")'
+#LDpred - R-based
+RUN Rscript -e 'remotes::install_github("https://github.com/privefl/bigsnpr.git")'
+RUN Rscript -e "remotes::install_github('merns/postgwas')"
+RUN Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')"
+RUN Rscript -e "remotes::install_github('ozancinar/poolR')"
+
+RUN Rscript -e 'install.packages(c("BiocManager"), repos="https://cloud.r-project.org")'
+RUN Rscript -e "BiocManager::install('ASSET')"
+RUN Rscript -e "BiocManager::install('gwascat')"
+RUN Rscript -e "BiocManager::install('snpStats')"
