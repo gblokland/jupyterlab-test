@@ -41,7 +41,8 @@ RUN export PATH=/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopil
 RUN mkdir -p /ricopili/dependencies/R_packages && \
     chmod -R 755 /ricopili/dependencies/R_packages
 
-FROM rocker/rstudio:4.0.0
+#FROM rocker/rstudio:4.0.0
+FROM rocker/r-base:4.2.2
 
 #, lib='/ricopili/dependencies/R_packages'
 #, lib='/usr/local/lib/R/site-library'
@@ -78,10 +79,10 @@ RUN Rscript -e 'remotes::install_github("rstudio/httpuv")'
 #RUN Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')"
 #RUN Rscript -e "remotes::install_github('ozancinar/poolR')"
 
-RUN Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")'
-RUN Rscript -e "BiocManager::install('ASSET')"
-RUN Rscript -e "BiocManager::install('gwascat')"
-RUN Rscript -e "BiocManager::install('snpStats')"
+#RUN Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")'
+#RUN Rscript -e "BiocManager::install('ASSET')"
+#RUN Rscript -e "BiocManager::install('gwascat')"
+#RUN Rscript -e "BiocManager::install('snpStats')"
 
 #'mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars', 
 #RUN Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
