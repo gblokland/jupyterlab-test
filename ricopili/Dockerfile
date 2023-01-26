@@ -10,24 +10,10 @@ MAINTAINER Gabriella Blokland
 
 # system libraries of general use
 RUN apt-get update && apt-get install -y \
-    sudo \
-    pandoc \
-    pandoc-citeproc \
-    pkg-config \
-    libnlopt-dev \
-    libcurl4-gnutls-dev \
-    libcairo2-dev \
-    libxt-dev \
-    libgsl-dev \
-    libssl-dev \
-    libssh2-1-dev \
-    libssl1.0.0 \
-    libxml2-dev \
-    libfontconfig1-dev \
-    openssl
+    sudo pandoc pandoc-citeproc pkg-config libnlopt-dev libcurl4-gnutls-dev libcairo2-dev libxt-dev libgsl-dev \
+    libssl-dev libssh2-1-dev libssl1.0.0 libxml2-dev libfontconfig1-dev openssl
 
-RUN apt-get update && apt-get install -y \
-    libmpfr-dev
+RUN apt-get update && apt-get install -y libmpfr-dev
 
 RUN apt-get install libcurl4-openssl-dev -y
 
