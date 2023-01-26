@@ -35,6 +35,7 @@ RUN ls /usr/lib/pkgconfig/
 RUN cp /usr/lib/x86_64-linux-gnu/pkgconfig/*.pc /usr/lib/pkgconfig/
 RUN ls /usr/lib/pkgconfig/
 
+RUN wget ftp://xmlsoft.org/libxml2/libxml2-2.9.2.tar.gz && tar -xvf libxml2-2.9.2.tar.gz && cd libxml2-2.9.2 && ./configure --prefix=/usr --disable-static --with-history && make && sudo make install
 
 RUN mkdir -p /ricopili/dependencies/R_packages && \
     chmod -R 755 /ricopili/dependencies/R_packages
@@ -51,6 +52,7 @@ RUN export PATH=/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopil
     # create personal library & add to the path
     Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
+    Rscript -e 'Sys.setenv(PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig")' && \
     Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")' && \
     Rscript -e 'remotes::install_github("r-lib/xml2")' && \
     Rscript -e 'remotes::install_github("r-lib/systemfonts")' && \
