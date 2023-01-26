@@ -98,8 +98,15 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e "BiocManager::install('gwascat')" && \
     Rscript -e "BiocManager::install('snpStats')"
 
-#RUN Rscript -e 'install.packages(c('mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars'), repos="https://cloud.r-project.org")'
-#RUN Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
+RUN Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy'), repos='http://cran.rstudio.com/')"
+RUN Rscript -e "install.packages(c('dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter'), repos='http://cran.rstudio.com/')"
+RUN Rscript -e "install.packages(c('gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice'), repos='http://cran.rstudio.com/')"
+RUN Rscript -e "install.packages(c('lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych'), repos='http://cran.rstudio.com/')"
+RUN Rscript -e "install.packages(c('randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2'), repos='http://cran.rstudio.com/')"
+RUN Rscript -e "install.packages(c('rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr'), repos='http://cran.rstudio.com/')"
+RUN Rscript -e "install.packages(c('sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram'), repos='http://cran.rstudio.com/')"
+RUN Rscript -e "install.packages(c('viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='http://cran.rstudio.com/')"
+#RUN Rscript -e "install.packages(c('mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars'), repos='http://cran.rstudio.com/')"
 #RUN Rscript -e "install.packages('cmutils', repos = NULL, type = 'source')"
 #RUN Rscript -e 'system("sudo apt-get install -y libxml2-dev")' && \
     #Rscript -e 'system("sudo apt-get install -y libfontconfig1-dev")' && \
