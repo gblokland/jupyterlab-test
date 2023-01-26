@@ -4,8 +4,8 @@ LABEL org.opencontainers.image.source="https://github.com/gblokland/jupyterlab"
 
 WORKDIR /root
 
-#FROM rocker/rstudio-stable:3.4.4 #this R is version 3.3.3, several packages need at least 3.5 or 3.6
 FROM rocker/rstudio:4.0.0
+#FROM rocker/rstudio-stable:3.4.4 #this R is version 3.3.3, several packages need at least 3.5 or 3.6
 #FROM rocker/r-base:4.2.2
 
 MAINTAINER Gabriella Blokland
@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     sudo pandoc pandoc-citeproc pkg-config libnlopt-dev libcairo2-dev libxt-dev libgsl-dev \
     libssl-dev libssh2-1-dev libxml2-dev libfontconfig1-dev openssl libmpfr-dev libcurl4-openssl-dev \
     libzmq3-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev build-essential libicu-dev \
-    wget vim rsync git tree tk build-essential bash-completion bc gpg \
+    wget curl vim rsync git tree tk build-essential bash-completion bc gpg \
     libz-dev zlib1g-dev libudunits2-dev libgdal-dev libv8-dev libmagick++-dev \
     liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libssl-dev libbz2-dev liblzma-dev libffi-dev 
     #libcurl-gnutls libssl1.0.0 
@@ -28,9 +28,8 @@ RUN R CMD javareconf
 # r-java
 RUN apt-get install r-cran-rjava -y
 
-#RUN R -e 'install.packages("purrr", repos = "http://cran.rstudio.com/")' #Depends:	R (≥ 3.4.0)
-#RUN R -e 'install.packages("devtools", repos = "http://cran.rstudio.com/")'
-RUN R -e 'install.packages("remotes", repos = "http://cran.rstudio.com/")'
+RUN R -e 'install.packages("devtools", repos = "http://cran.rstudio.com/")'
+RUN R -e 'install.packages(c("remotes","RcppEigen"), repos = "http://cran.rstudio.com/")'
 
 #Get Linux OS flavor:
 #RUN cat /etc/os-release
@@ -65,6 +64,7 @@ RUN mkdir -p /ricopili/dependencies/R_packages && \
 
 #, lib='/ricopili/dependencies/R_packages'
 #, lib='/usr/local/lib/R/site-library'
+#, lib='/root/R/x86_64-pc-linux-gnu-library/3.6'
 ENV PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
 ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig 
 RUN export PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH  && \
@@ -73,8 +73,13 @@ RUN export PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Mi
 # create personal library & add to the path
 RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
+    Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
+    Rscript -e "BiocManager::install('ASSET')" && \
+    Rscript -e "BiocManager::install('gwascat')" && \
+    Rscript -e "BiocManager::install('snpStats')" && \
+    #install snpStats first otherwise LAVA install won't work: dependency ‘snpStats’ is not available for package ‘LAVA’
     #Sys.unsetenv("GITHUB_PAT")
-    Rscript -e 'remotes::install_github("kenhanscombe/ukbtools", dependencies = TRUE)' && \
+    Rscript -e "remotes::install_github('kenhanscombe/ukbtools', dependencies = TRUE)" && \
     Rscript -e "remotes::install_github('DudbridgeLab/avengeme')" && \
     Rscript -e "remotes::install_github('MathiasHarrer/dmetar')" && \
     Rscript -e "remotes::install_github('kassambara/easyGgplot2')" && \
@@ -83,26 +88,22 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     #Install postgwas from GitHub via devtools:
     #setRepositories(ind = 1:6)
     #SAIGE is an R package with Scalable and Accurate Implementation of Generalized mixed model (Chen, H. et al. 2016). It accounts for sample relatedness and is feasible for genetic association tests in large cohorts and biobanks (N > 400,000).
-    Rscript -e 'remotes::install_github("leeshawn/MetaSKAT")' && \
-    Rscript -e 'remotes::install_github("weizhouUMICH/SAIGE")' && \
-    #LDpred - R-based
-    Rscript -e 'remotes::install_github("https://github.com/privefl/bigsnpr.git")' && \
+    Rscript -e "remotes::install_github('leeshawn/MetaSKAT')" && \
+    Rscript -e "remotes::install_github('weizhouUMICH/SAIGE')" && \
+    Rscript -e "remotes::install_github('https://github.com/privefl/bigsnpr.git')" && \     #LDpred - R-based
     Rscript -e "remotes::install_github('merns/postgwas')" && \
     Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')" && \
     Rscript -e "remotes::install_github('ozancinar/poolR')" && \
-    Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
-    Rscript -e "BiocManager::install('ASSET')" && \
-    Rscript -e "BiocManager::install('gwascat')" && \
-    Rscript -e "BiocManager::install('snpStats')"
+    #Standard packages
+    Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='http://cran.rstudio.com/')"
 
-RUN Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy'), repos='http://cran.rstudio.com/')"
-RUN Rscript -e "install.packages(c('dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter'), repos='http://cran.rstudio.com/')"
-RUN Rscript -e "install.packages(c('gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice'), repos='http://cran.rstudio.com/')"
-RUN Rscript -e "install.packages(c('lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych'), repos='http://cran.rstudio.com/')"
-RUN Rscript -e "install.packages(c('randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2'), repos='http://cran.rstudio.com/')"
-RUN Rscript -e "install.packages(c('rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr'), repos='http://cran.rstudio.com/')"
-RUN Rscript -e "install.packages(c('sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram'), repos='http://cran.rstudio.com/')"
-RUN Rscript -e "install.packages(c('viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='http://cran.rstudio.com/')"
 #RUN Rscript -e "install.packages(c('mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars'), repos='http://cran.rstudio.com/')"
 #RUN Rscript -e "install.packages('cmutils', repos = NULL, type = 'source')"
 #RUN Rscript -e 'system("sudo apt-get install -y libxml2-dev")' && \
@@ -115,15 +116,12 @@ RUN Rscript -e "install.packages(c('viridis', 'viridisLite', 'vroom', 'writexl',
     #Rscript -e 'remotes::install_github("r-lib/systemfonts")' && \
     #Rscript -e 'remotes::install_github("rstudio/httpuv")' && \
     #Rscript -e 'remotes::install_github("r-lib/devtools")'
-
 #RUN Rscript -e 'install.packages("xml2", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 #RUN Rscript -e 'install.packages("systemfonts", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 #RUN Rscript -e 'install.packages("httpuv", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 #RUN Rscript -e 'install.packages("devtools", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 
-
-
-#Added by me
+#Additional genetics tools
 RUN curl -Lo /tmp/bedtools-2.30.0.tgz https://github.com/arq5x/bedtools2/releases/download/v2.30.0/bedtools-2.30.0.tar.gz && \
     tar zxvf /tmp/bedtools-2.30.0.tgz -C /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
@@ -191,7 +189,6 @@ RUN git clone https://github.com/precimed/mostest.git /tmp/ && \
     cd /tmp/mostest && \
     cp -r /tmp/mostest /ricopili/dependencies/ 
 
-
 #Original dependencies
 ENV PATH=/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
 #Added by me
@@ -199,5 +196,4 @@ ENV PATH=/ricopili/dependencies/bedtools-2.30.0:/ricopili/dependencies/vcftools:
 
 EXPOSE 8888
 ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
-
 CMD ["/bin/bash"]
