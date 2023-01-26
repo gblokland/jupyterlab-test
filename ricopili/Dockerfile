@@ -10,13 +10,15 @@ MAINTAINER Gabriella Blokland
 
 # system libraries of general use
 RUN apt-get update && apt-get install -y \
-    sudo pandoc pandoc-citeproc pkg-config libnlopt-dev libcurl4-gnutls-dev libcairo2-dev libxt-dev libgsl-dev \
+    sudo pandoc pandoc-citeproc pkg-config libnlopt-dev libcairo2-dev libxt-dev libgsl-dev \
     libssl-dev libssh2-1-dev libssl1.0.0 libxml2-dev libfontconfig1-dev openssl \
     libmpfr-dev libcurl4-openssl-dev \
     libzmq3-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev build-essential libicu-dev \
     wget vim rsync git tree tk build-essential bash-completion bc gpg \
     libz-dev zlib1g-dev libudunits2-dev libgdal-dev libv8-dev libmagick++-dev \
     liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libssl-dev libbz2-dev liblzma-dev 
+    
+    #libcurl4-gnutls-dev conflicts with libcurl4-openssl-dev
 
 # install java
 RUN apt-get update && apt-get install -y openjdk-8-jdk openjdk-8-jre
