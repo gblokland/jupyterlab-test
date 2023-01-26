@@ -55,7 +55,7 @@ RUN export PATH=/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopil
     Rscript -e 'remotes::install_github("r-lib/xml2")' && \
     Rscript -e 'remotes::install_github("r-lib/systemfonts")' && \
     Rscript -e 'remotes::install_github("rstudio/httpuv")' && \
-    Rscript -e 'remotes::install_github("r-lib/devtools")
+    Rscript -e 'remotes::install_github("r-lib/devtools")'
 
 #RUN Rscript -e 'install.packages("xml2", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 #RUN Rscript -e 'install.packages("systemfonts", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
