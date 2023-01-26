@@ -4,6 +4,41 @@ LABEL org.opencontainers.image.source="https://github.com/gblokland/jupyterlab"
 
 WORKDIR /root
 
+FROM rocker/rstudio-stable:3.4.4
+
+MAINTAINER Tazovsky
+
+# system libraries of general use
+RUN apt-get update && apt-get install -y \
+    sudo \
+    pandoc \
+    pandoc-citeproc \
+    pkg-config \
+    libnlopt-dev \
+    libcurl4-gnutls-dev \
+    libcairo2-dev \
+    libxt-dev \
+    libgsl-dev \
+    libssl-dev \
+    libssh2-1-dev \
+    libssl1.0.0 \
+    libxml2-dev \
+    openssl
+
+RUN apt-get update && apt-get install -y \
+    libmpfr-dev
+
+RUN apt-get install libcurl4-openssl-dev -y
+
+# install java
+RUN apt-get update && apt-get install -y openjdk-8-jdk openjdk-8-jre
+RUN R CMD javareconf
+
+# r-java
+RUN apt-get install r-cran-rjava -y
+
+RUN R -e 'install.packages("devtools", repos = "http://cran.rstudio.com/")'
+
 #Get Linux OS flavor:
 #RUN cat /etc/os-release
 #Check that 'pkg-config' is in your PATH
@@ -36,7 +71,7 @@ RUN cp /usr/lib/x86_64-linux-gnu/pkgconfig/*.pc /usr/lib/pkgconfig/
 RUN ls /usr/lib/pkgconfig/
 RUN ls /usr/local/lib/
 
-RUN cd /usr/local/lib/ && wget ftp://xmlsoft.org/libxml2/libxml2-2.9.2.tar.gz && tar -xvf libxml2-2.9.2.tar.gz && cd libxml2-2.9.2 && ./configure --prefix=/usr --disable-static --with-history && make && sudo make install
+#RUN cd /usr/local/lib/ && wget ftp://xmlsoft.org/libxml2/libxml2-2.9.2.tar.gz && tar -xvf libxml2-2.9.2.tar.gz && cd libxml2-2.9.2 && ./configure --prefix=/usr --disable-static --with-history && make && sudo make install
 
 RUN mkdir -p /ricopili/dependencies/R_packages && \
     chmod -R 755 /ricopili/dependencies/R_packages
