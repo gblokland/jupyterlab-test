@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     libzmq3-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev build-essential libicu-dev \
     wget vim rsync git tree tk build-essential bash-completion bc gpg \
     libz-dev zlib1g-dev libudunits2-dev libgdal-dev libv8-dev libmagick++-dev \
-    liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libssl-dev libbz2-dev liblzma-dev libffi-dev libcurl-gnutls
+    liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libssl-dev libbz2-dev liblzma-dev libffi-dev 
+    #libcurl-gnutls
     
     #libcurl4-gnutls-dev conflicts with libcurl4-openssl-dev
 
