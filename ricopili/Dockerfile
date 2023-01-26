@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     sudo pandoc pandoc-citeproc pkg-config libnlopt-dev libcairo2-dev libxt-dev libgsl-dev \
     libssl-dev libssh2-1-dev libxml2-dev libfontconfig1-dev openssl libmpfr-dev libcurl4-openssl-dev \
     libzmq3-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev build-essential libicu-dev \
-    wget curl vim rsync git tree tk build-essential bash-completion bc gpg \
+    cmake wget curl vim rsync git tree tk build-essential bash-completion bc gpg \
     libz-dev zlib1g-dev libudunits2-dev libgdal-dev libv8-dev libmagick++-dev \
     liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libssl-dev libbz2-dev liblzma-dev libffi-dev 
     #libcurl-gnutls libssl1.0.0 
