@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.source="https://github.com/gblokland/jupyterlab"
 
 WORKDIR /root
 
-FROM rocker/rstudio-stable:3.4.4
+FROM rocker/rstudio-stable:4.1.0
 
 MAINTAINER Gabriella Blokland
 
@@ -64,7 +64,7 @@ RUN mkdir -p /ricopili/dependencies/R_packages && \
     chmod -R 755 /ricopili/dependencies/R_packages
 
 #FROM rocker/rstudio:4.0.0
-FROM rocker/r-base:4.2.2
+#FROM rocker/r-base:4.2.2
 
 #, lib='/ricopili/dependencies/R_packages'
 #, lib='/usr/local/lib/R/site-library'
@@ -75,7 +75,32 @@ RUN export PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Mi
 
 # create personal library & add to the path
 RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
-    Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
+    Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
+    #Sys.unsetenv("GITHUB_PAT")
+    Rscript -e 'remotes::install_github("kenhanscombe/ukbtools", dependencies = TRUE)' && \
+    Rscript -e "remotes::install_github('DudbridgeLab/avengeme')" && \
+    Rscript -e "remotes::install_github('MathiasHarrer/dmetar')" && \
+    Rscript -e "remotes::install_github('kassambara/easyGgplot2')" && \
+    Rscript -e "remotes::install_github('ramiromagno/gwasrapidd')" && \
+    Rscript -e "remotes::install_github('https://github.com/josefin-werme/LAVA.git')" && \
+    #Install postgwas from GitHub via devtools:
+    #setRepositories(ind = 1:6)
+    #SAIGE is an R package with Scalable and Accurate Implementation of Generalized mixed model (Chen, H. et al. 2016). It accounts for sample relatedness and is feasible for genetic association tests in large cohorts and biobanks (N > 400,000).
+    Rscript -e 'remotes::install_github("leeshawn/MetaSKAT")' && \
+    Rscript -e 'remotes::install_github("weizhouUMICH/SAIGE")' && \
+    #LDpred - R-based
+    Rscript -e 'remotes::install_github("https://github.com/privefl/bigsnpr.git")' && \
+    Rscript -e "remotes::install_github('merns/postgwas')" && \
+    Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')" && \
+    Rscript -e "remotes::install_github('ozancinar/poolR')" && \
+    Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
+    Rscript -e "BiocManager::install('ASSET')" && \
+    Rscript -e "BiocManager::install('gwascat')" && \
+    Rscript -e "BiocManager::install('snpStats')"
+
+#RUN Rscript -e 'install.packages(c('mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars'), repos="https://cloud.r-project.org")'
+#RUN Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
+#RUN Rscript -e "install.packages('cmutils', repos = NULL, type = 'source')"
 #RUN Rscript -e 'system("sudo apt-get install -y libxml2-dev")' && \
     #Rscript -e 'system("sudo apt-get install -y libfontconfig1-dev")' && \
     #Rscript -e 'Sys.setenv(PKG_CONFIG_PATH=paste(Sys.getenv('PKG_CONFIG_PATH'),paste(.libPaths(),'/usr/lib/x86_64-linux-gnu/pkgconfig',sep='/',collapse=':'),sep=':'))' && \
@@ -92,32 +117,6 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
 #RUN Rscript -e 'install.packages("httpuv", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 #RUN Rscript -e 'install.packages("devtools", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 
-#Sys.unsetenv("GITHUB_PAT")
-RUN Rscript -e 'remotes::install_github("kenhanscombe/ukbtools", dependencies = TRUE)'
-RUN Rscript -e "remotes::install_github('DudbridgeLab/avengeme')"
-RUN Rscript -e "remotes::install_github('MathiasHarrer/dmetar')"
-RUN Rscript -e "remotes::install_github('kassambara/easyGgplot2')"
-RUN Rscript -e "remotes::install_github('ramiromagno/gwasrapidd')"
-RUN Rscript -e "remotes::install_github('https://github.com/josefin-werme/LAVA.git')"
-#Install postgwas from GitHub via devtools:
-#setRepositories(ind = 1:6)
-#SAIGE is an R package with Scalable and Accurate Implementation of Generalized mixed model (Chen, H. et al. 2016). It accounts for sample relatedness and is feasible for genetic association tests in large cohorts and biobanks (N > 400,000).
-RUN Rscript -e 'remotes::install_github("leeshawn/MetaSKAT")'
-RUN Rscript -e 'remotes::install_github("weizhouUMICH/SAIGE")'
-#LDpred - R-based
-RUN Rscript -e 'remotes::install_github("https://github.com/privefl/bigsnpr.git")'
-RUN Rscript -e "remotes::install_github('merns/postgwas')"
-RUN Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')"
-RUN Rscript -e "remotes::install_github('ozancinar/poolR')"
-
-RUN Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")'
-RUN Rscript -e "BiocManager::install('ASSET')"
-RUN Rscript -e "BiocManager::install('gwascat')"
-RUN Rscript -e "BiocManager::install('snpStats')"
-
-#RUN Rscript -e 'install.packages(c('mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars'), repos="https://cloud.r-project.org")'
-#RUN Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
-#RUN Rscript -e "install.packages('cmutils', repos = NULL, type = 'source')"
 
 
 #Added by me
