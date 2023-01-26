@@ -6,7 +6,7 @@ WORKDIR /root
 
 FROM rocker/rstudio-stable:3.4.4
 
-MAINTAINER Tazovsky
+MAINTAINER Gabriella Blokland
 
 # system libraries of general use
 RUN apt-get update && apt-get install -y \
@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
     libssh2-1-dev \
     libssl1.0.0 \
     libxml2-dev \
+    libfontconfig1-dev \
     openssl
 
 RUN apt-get update && apt-get install -y \
