@@ -30,6 +30,7 @@ RUN apt-get install r-cran-rjava -y
 
 RUN R -e 'install.packages("devtools", repos = "http://cran.rstudio.com/")'
 RUN R -e 'install.packages(c("remotes","RcppEigen"), repos = "http://cran.rstudio.com/")'
+RUN R -e 'install.packages("tidyverse", dependencies = TRUE, repos = "http://cran.rstudio.com/")'
 
 #Get Linux OS flavor:
 #RUN cat /etc/os-release
@@ -76,10 +77,9 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
     Rscript -e "BiocManager::install('ASSET')" && \
     Rscript -e "BiocManager::install('gwascat')" && \
-    Rscript -e "BiocManager::install('snpStats')" && \
-    #install snpStats first otherwise LAVA install won't work: dependency ‘snpStats’ is not available for package ‘LAVA’
+    Rscript -e "BiocManager::install('snpStats')" && \  #install snpStats first otherwise LAVA install won't work: dependency ‘snpStats’ is not available for package ‘LAVA’
     #Sys.unsetenv("GITHUB_PAT")
-    Rscript -e "remotes::install_github('kenhanscombe/ukbtools', dependencies = TRUE)" && \
+    #Rscript -e "remotes::install_github('kenhanscombe/ukbtools', dependencies = TRUE)" && \    #is now on cran so gets installed with standard packages
     Rscript -e "remotes::install_github('DudbridgeLab/avengeme')" && \
     Rscript -e "remotes::install_github('MathiasHarrer/dmetar')" && \
     Rscript -e "remotes::install_github('kassambara/easyGgplot2')" && \
