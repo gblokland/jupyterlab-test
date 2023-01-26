@@ -34,8 +34,9 @@ RUN ls /usr/lib/x86_64-linux-gnu/pkgconfig/
 RUN ls /usr/lib/pkgconfig/
 RUN cp /usr/lib/x86_64-linux-gnu/pkgconfig/*.pc /usr/lib/pkgconfig/
 RUN ls /usr/lib/pkgconfig/
+RUN ls /usr/local/lib/
 
-RUN wget ftp://xmlsoft.org/libxml2/libxml2-2.9.2.tar.gz && tar -xvf libxml2-2.9.2.tar.gz && cd libxml2-2.9.2 && ./configure --prefix=/usr --disable-static --with-history && make && sudo make install
+RUN cd /usr/local/lib/ && wget ftp://xmlsoft.org/libxml2/libxml2-2.9.2.tar.gz && tar -xvf libxml2-2.9.2.tar.gz && cd libxml2-2.9.2 && ./configure --prefix=/usr --disable-static --with-history && make && sudo make install
 
 RUN mkdir -p /ricopili/dependencies/R_packages && \
     chmod -R 755 /ricopili/dependencies/R_packages
@@ -45,14 +46,18 @@ FROM rocker/r-base:4.2.2
 
 #, lib='/ricopili/dependencies/R_packages'
 #, lib='/usr/local/lib/R/site-library'
-ENV PATH=/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
+ENV PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
 ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig 
-RUN export PATH=/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH  && \
+RUN export PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH  && \
     export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig  && \
     # create personal library & add to the path
     Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
-    Rscript -e 'Sys.setenv(PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig")' && \
+    Rscript -e 'system("sudo apt-get install -y libxml2-dev")' && \
+    Rscript -e 'system("sudo apt-get install -y libfontconfig1-dev")' && \
+    Rscript -e 'Sys.setenv(PKG_CONFIG_PATH=paste(Sys.getenv('PKG_CONFIG_PATH'),paste(.libPaths(),'/usr/lib/x86_64-linux-gnu/pkgconfig',sep='/',collapse=':'),sep=':'))' && \
+    #Rscript -e 'Sys.setenv(PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig")' && \
+    Rscript -e 'system("echo $PKG_CONFIG_PATH")' && \
     Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")' && \
     Rscript -e 'remotes::install_github("r-lib/xml2")' && \
     Rscript -e 'remotes::install_github("r-lib/systemfonts")' && \
