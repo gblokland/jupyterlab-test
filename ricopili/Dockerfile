@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
     libzmq3-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev build-essential libicu-dev \
     wget vim rsync git tree tk build-essential bash-completion bc gpg \
     libz-dev zlib1g-dev libudunits2-dev libgdal-dev libv8-dev libmagick++-dev \
-    liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libssl-dev libbz2-dev liblzma-dev 
+    liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libssl-dev libbz2-dev liblzma-dev libffi-dev libcurl-gnutls
     
     #libcurl4-gnutls-dev conflicts with libcurl4-openssl-dev
 
@@ -68,20 +68,21 @@ FROM rocker/r-base:4.2.2
 ENV PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
 ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig 
 RUN export PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH  && \
-    export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig  && \
-    # create personal library & add to the path
-    Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
-    Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
-    Rscript -e 'system("sudo apt-get install -y libxml2-dev")' && \
-    Rscript -e 'system("sudo apt-get install -y libfontconfig1-dev")' && \
-    Rscript -e 'Sys.setenv(PKG_CONFIG_PATH=paste(Sys.getenv('PKG_CONFIG_PATH'),paste(.libPaths(),'/usr/lib/x86_64-linux-gnu/pkgconfig',sep='/',collapse=':'),sep=':'))' && \
+    export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig
+
+# create personal library & add to the path
+RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
+    Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
+#RUN Rscript -e 'system("sudo apt-get install -y libxml2-dev")' && \
+    #Rscript -e 'system("sudo apt-get install -y libfontconfig1-dev")' && \
+    #Rscript -e 'Sys.setenv(PKG_CONFIG_PATH=paste(Sys.getenv('PKG_CONFIG_PATH'),paste(.libPaths(),'/usr/lib/x86_64-linux-gnu/pkgconfig',sep='/',collapse=':'),sep=':'))' && \
     #Rscript -e 'Sys.setenv(PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig")' && \
-    Rscript -e 'system("echo $PKG_CONFIG_PATH")' && \
-    Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")' && \
-    Rscript -e 'remotes::install_github("r-lib/xml2")' && \
-    Rscript -e 'remotes::install_github("r-lib/systemfonts")' && \
-    Rscript -e 'remotes::install_github("rstudio/httpuv")' && \
-    Rscript -e 'remotes::install_github("r-lib/devtools")'
+    #Rscript -e 'system("echo $PKG_CONFIG_PATH")' && \
+    #Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")' && \
+    #Rscript -e 'remotes::install_github("r-lib/xml2")' && \
+    #Rscript -e 'remotes::install_github("r-lib/systemfonts")' && \
+    #Rscript -e 'remotes::install_github("rstudio/httpuv")' && \
+    #Rscript -e 'remotes::install_github("r-lib/devtools")'
 
 #RUN Rscript -e 'install.packages("xml2", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 #RUN Rscript -e 'install.packages("systemfonts", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
@@ -89,33 +90,31 @@ RUN export PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Mi
 #RUN Rscript -e 'install.packages("devtools", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 
 #Sys.unsetenv("GITHUB_PAT")
-#RUN Rscript -e 'install.packages(c("remotes", "devtools"), repos="https://cloud.r-project.org")'
-#RUN Rscript -e 'remotes::install_github("kenhanscombe/ukbtools", dependencies = TRUE)'
-#RUN Rscript -e "remotes::install_github('DudbridgeLab/avengeme')"
-#RUN Rscript -e "remotes::install_github('MathiasHarrer/dmetar')"
-#RUN Rscript -e "remotes::install_github('kassambara/easyGgplot2')"
-#RUN Rscript -e "remotes::install_github('ramiromagno/gwasrapidd')"
-#RUN Rscript -e "remotes::install_github('https://github.com/josefin-werme/LAVA.git')"
+RUN Rscript -e 'remotes::install_github("kenhanscombe/ukbtools", dependencies = TRUE)'
+RUN Rscript -e "remotes::install_github('DudbridgeLab/avengeme')"
+RUN Rscript -e "remotes::install_github('MathiasHarrer/dmetar')"
+RUN Rscript -e "remotes::install_github('kassambara/easyGgplot2')"
+RUN Rscript -e "remotes::install_github('ramiromagno/gwasrapidd')"
+RUN Rscript -e "remotes::install_github('https://github.com/josefin-werme/LAVA.git')"
 #Install postgwas from GitHub via devtools:
 #setRepositories(ind = 1:6)
 #SAIGE is an R package with Scalable and Accurate Implementation of Generalized mixed model (Chen, H. et al. 2016). It accounts for sample relatedness and is feasible for genetic association tests in large cohorts and biobanks (N > 400,000).
-#RUN Rscript -e 'remotes::install_github("leeshawn/MetaSKAT")'
-#RUN Rscript -e 'remotes::install_github("weizhouUMICH/SAIGE")'
+RUN Rscript -e 'remotes::install_github("leeshawn/MetaSKAT")'
+RUN Rscript -e 'remotes::install_github("weizhouUMICH/SAIGE")'
 #LDpred - R-based
-#RUN Rscript -e 'remotes::install_github("https://github.com/privefl/bigsnpr.git")'
-#RUN Rscript -e "remotes::install_github('merns/postgwas')"
-#RUN Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')"
-#RUN Rscript -e "remotes::install_github('ozancinar/poolR')"
+RUN Rscript -e 'remotes::install_github("https://github.com/privefl/bigsnpr.git")'
+RUN Rscript -e "remotes::install_github('merns/postgwas')"
+RUN Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')"
+RUN Rscript -e "remotes::install_github('ozancinar/poolR')"
 
-#RUN Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")'
-#RUN Rscript -e "BiocManager::install('ASSET')"
-#RUN Rscript -e "BiocManager::install('gwascat')"
-#RUN Rscript -e "BiocManager::install('snpStats')"
+RUN Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")'
+RUN Rscript -e "BiocManager::install('ASSET')"
+RUN Rscript -e "BiocManager::install('gwascat')"
+RUN Rscript -e "BiocManager::install('snpStats')"
 
-#'mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars', 
+#RUN Rscript -e 'install.packages(c('mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars'), repos="https://cloud.r-project.org")'
 #RUN Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy', 'dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter', 'gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice', 'lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych', 'randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2', 'rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr', 'sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram', 'viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='https://cloud.r-project.org')"
-
-#RUN Rscript -e "install.packages('cmutils', repos =NULL, type='source')"
+#RUN Rscript -e "install.packages('cmutils', repos = NULL, type = 'source')"
 
 
 #Added by me
