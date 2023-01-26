@@ -4,7 +4,10 @@ LABEL org.opencontainers.image.source="https://github.com/gblokland/jupyterlab"
 
 WORKDIR /root
 
-FROM rocker/rstudio-stable:3.4.4
+#FROM rocker/rstudio-stable:3.4.4 #this R is version 3.3.3, several packages need at least 3.5 or 3.6
+FROM rocker/rstudio:4.0.0
+#FROM rocker/r-base:4.2.2
+
 
 MAINTAINER Gabriella Blokland
 
@@ -28,7 +31,7 @@ RUN R CMD javareconf
 # r-java
 RUN apt-get install r-cran-rjava -y
 
-#RUN R -e 'install.packages("purrr", repos = "http://cran.rstudio.com/")'
+#RUN R -e 'install.packages("purrr", repos = "http://cran.rstudio.com/")' #Depends:	R (≥ 3.4.0)
 #RUN R -e 'install.packages("devtools", repos = "http://cran.rstudio.com/")'
 RUN R -e 'install.packages("remotes", repos = "http://cran.rstudio.com/")'
 
@@ -62,9 +65,6 @@ RUN ls /usr/local/lib/
 
 RUN mkdir -p /ricopili/dependencies/R_packages && \
     chmod -R 755 /ricopili/dependencies/R_packages
-
-#FROM rocker/rstudio:4.0.0
-#FROM rocker/r-base:4.2.2
 
 #, lib='/ricopili/dependencies/R_packages'
 #, lib='/usr/local/lib/R/site-library'
