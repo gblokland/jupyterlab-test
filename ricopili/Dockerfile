@@ -13,9 +13,14 @@ RUN apt-get update && apt-get install -y \
     sudo pandoc pandoc-citeproc pkg-config libnlopt-dev libcurl4-gnutls-dev libcairo2-dev libxt-dev libgsl-dev \
     libssl-dev libssh2-1-dev libssl1.0.0 libxml2-dev libfontconfig1-dev openssl
 
-RUN apt-get update && apt-get install -y libmpfr-dev
+RUN apt-get update && apt-get install -y \
+    libmpfr-dev libcurl4-openssl-dev \
+    libzmq3-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev build-essential libicu-dev
 
-RUN apt-get install libcurl4-openssl-dev -y
+RUN apt-get update && apt-get install -y \
+    sudo apt-get install -y wget vim rsync git tree tk build-essential bash-completion bc gpg && \
+    sudo apt-get install -y libz-dev zlib1g-dev libudunits2-dev libgdal-dev libv8-dev libmagick++-dev && \
+    sudo apt-get install -y liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libssl-dev libbz2-dev liblzma-dev 
 
 # install java
 RUN apt-get update && apt-get install -y openjdk-8-jdk openjdk-8-jre
@@ -35,15 +40,9 @@ ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/
 RUN export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig 
 RUN echo $PKG_CONFIG_PATH
 
-RUN apt-get update && \
-    apt-get install -y sudo && \
-    sudo apt-get install -y pkg-config && \
-    sudo apt-get install -y wget vim rsync git tree tk build-essential bash-completion bc gpg && \
-    sudo apt-get install -y libz-dev zlib1g-dev libudunits2-dev libgdal-dev libcairo2-dev libgsl-dev libv8-dev libmagick++-dev && \
-    sudo apt-get install -y liblapack-dev libblas-dev libharfbuzz-dev libfribidi-dev libcurl4-openssl-dev libssl-dev libbz2-dev liblzma-dev && \
-    sudo apt-get install -y libxml2-dev libfontconfig1-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
     
-RUN sudo apt-get install -y python3-pip python3-dev && pip3 install --upgrade pip && \
+RUN apt-get update && \
+    apt-get install -y python3-pip python3-dev && pip3 install --upgrade pip && \
     pip3 install notebook jupyterlab
 
 #RUN apt-get update && \
