@@ -28,9 +28,9 @@ RUN R CMD javareconf
 # r-java
 RUN apt-get install r-cran-rjava -y
 
-RUN R -e 'install.packages("purrr", repos = "http://cran.rstudio.com/")'
-
-RUN R -e 'install.packages("devtools", repos = "http://cran.rstudio.com/")'
+#RUN R -e 'install.packages("purrr", repos = "http://cran.rstudio.com/")'
+#RUN R -e 'install.packages("devtools", repos = "http://cran.rstudio.com/")'
+RUN R -e 'install.packages("remotes", repos = "http://cran.rstudio.com/")'
 
 #Get Linux OS flavor:
 #RUN cat /etc/os-release
