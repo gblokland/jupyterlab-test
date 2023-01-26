@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.source="https://github.com/gblokland/jupyterlab"
 
 WORKDIR /root
 
-FROM rocker/rstudio-stable:4.1.0
+FROM rocker/rstudio-stable:3.4.4
 
 MAINTAINER Gabriella Blokland
 
