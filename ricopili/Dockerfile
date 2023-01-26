@@ -28,8 +28,7 @@ RUN R CMD javareconf
 # r-java
 RUN apt-get install r-cran-rjava -y
 
-RUN R -e 'install.packages("devtools", repos = "http://cran.rstudio.com/")'
-RUN R -e 'install.packages(c("remotes","RcppEigen"), repos = "http://cran.rstudio.com/")'
+RUN R -e 'install.packages(c("devtools", "remotes","RcppEigen"), repos = "http://cran.rstudio.com/")'
 RUN R -e 'install.packages("tidyverse", dependencies = TRUE, repos = "http://cran.rstudio.com/")'
 
 #Get Linux OS flavor:
