@@ -28,8 +28,9 @@ RUN R CMD javareconf
 # r-java
 RUN apt-get install r-cran-rjava -y
 
-RUN R -e 'install.packages(c("devtools", "remotes","RcppEigen"), repos = "http://cran.rstudio.com/")'
+RUN R -e 'install.packages(c("devtools", "remotes", "RcppEigen"), repos = "http://cran.rstudio.com/")'
 RUN R -e 'install.packages("tidyverse", dependencies = TRUE, repos = "http://cran.rstudio.com/")'
+RUN R -e 'install.packages("RSQLite", dependencies = TRUE, repos = "http://cran.rstudio.com/")'
 
 #Get Linux OS flavor:
 #RUN cat /etc/os-release
@@ -62,8 +63,6 @@ RUN ls /usr/local/lib/
 RUN mkdir -p /ricopili/dependencies/R_packages && \
     chmod -R 755 /ricopili/dependencies/R_packages
 
-#, lib='/ricopili/dependencies/R_packages'
-#, lib='/usr/local/lib/R/site-library'
 #, lib='/root/R/x86_64-pc-linux-gnu-library/3.6'
 ENV PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
 ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig 
@@ -76,7 +75,8 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
     Rscript -e "BiocManager::install('ASSET')" && \
     Rscript -e "BiocManager::install('gwascat')" && \
-    Rscript -e "BiocManager::install('snpStats')" && \  #install snpStats first otherwise LAVA install won't work: dependency ‘snpStats’ is not available for package ‘LAVA’
+    Rscript -e "BiocManager::install('snpStats')" && \  
+    #install snpStats first otherwise LAVA install won't work: dependency ‘snpStats’ is not available for package ‘LAVA’
     #Sys.unsetenv("GITHUB_PAT")
     #Rscript -e "remotes::install_github('kenhanscombe/ukbtools', dependencies = TRUE)" && \    #is now on cran so gets installed with standard packages
     Rscript -e "remotes::install_github('DudbridgeLab/avengeme')" && \
@@ -101,10 +101,10 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e "install.packages(c('randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='http://cran.rstudio.com/')"
+    Rscript -e "install.packages(c('viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('mvoutlier', 'qqman', 'rsq', 'xlsx', 'xlsxjars'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "installed.packages(); .libPaths(); .libPaths( c( .libPaths(), '/ricopili/dependencies/R_packages', '/usr/local/lib/R/site-library') )"
 
-#RUN Rscript -e "install.packages(c('mvoutlier', 'qqman', 'rJava', 'rsq', 'xlsx', 'xlsxjars'), repos='http://cran.rstudio.com/')"
-#RUN Rscript -e "install.packages('cmutils', repos = NULL, type = 'source')"
 #RUN Rscript -e 'system("sudo apt-get install -y libxml2-dev")' && \
     #Rscript -e 'system("sudo apt-get install -y libfontconfig1-dev")' && \
     #Rscript -e 'Sys.setenv(PKG_CONFIG_PATH=paste(Sys.getenv('PKG_CONFIG_PATH'),paste(.libPaths(),'/usr/lib/x86_64-linux-gnu/pkgconfig',sep='/',collapse=':'),sep=':'))' && \
@@ -115,6 +115,7 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     #Rscript -e 'remotes::install_github("r-lib/systemfonts")' && \
     #Rscript -e 'remotes::install_github("rstudio/httpuv")' && \
     #Rscript -e 'remotes::install_github("r-lib/devtools")'
+#RUN Rscript -e "install.packages('cmutils', repos = NULL, type = 'source')"
 #RUN Rscript -e 'install.packages("xml2", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 #RUN Rscript -e 'install.packages("systemfonts", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 #RUN Rscript -e 'install.packages("httpuv", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
