@@ -30,7 +30,7 @@ RUN apt-get install r-cran-rjava -y
 
 RUN R -e 'install.packages(c("devtools", "remotes", "RcppEigen"), repos = "http://cran.rstudio.com/")'
 RUN R -e 'install.packages("tidyverse", dependencies = TRUE, repos = "http://cran.rstudio.com/")'
-RUN R -e 'install.packages(c("RSQLite","dbplyr","ggplot2"), dependencies = TRUE, repos = "http://cran.rstudio.com/")'
+RUN R -e 'install.packages(c("units", "RSQLite","dbplyr","ggplot2"), dependencies = TRUE, repos = "http://cran.rstudio.com/")'
 
 #Get Linux OS flavor:
 #RUN cat /etc/os-release
@@ -69,19 +69,22 @@ ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/
 RUN export PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH  && \
     export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig
 
-# create personal library & add to the path
-RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
+
+RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \   ## create personal library & add to the path
     Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
     #Standard packages
-    Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('bigsnpr', 'corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'pbkrtest', 'doBy'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'gwasrapidd', 'haven', 'igraph', 'jpeg', 'lattice'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('randomForest', 'RColorBrewer', 'readxl', 'reshape', 'reshape2'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('gdata', 'ggcorrplot', 'ggplot2', 'ggstats', 'gtools', 'gwasrapidd', 'haven', 'igraph', 'jpeg', 'lattice'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('lubridate', 'meta', 'metafor', 'MetaSKAT', 'rpf', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('mvoutlier', 'qqman', 'rsq', 'xlsx', 'xlsxjars'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('mvoutlier', 'qqman', 'rsq', 'xlsx', 'xlsxjars'), repos='http://cran.rstudio.com/')"
+    
+RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
+    Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
     #Bioconductor packages
     Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
     Rscript -e "BiocManager::install('AnnotationDbi')" && \
@@ -93,16 +96,15 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     #Sys.unsetenv("GITHUB_PAT")
     #Rscript -e "remotes::install_github('kenhanscombe/ukbtools', dependencies = TRUE)" && \    #is now on cran so gets installed with standard packages
     #Rscript -e "remotes::install_github('ramiromagno/gwasrapidd')" && \    #is now on cran so gets installed with standard packages
-    Rscript -e "remotes::install_github('DudbridgeLab/avengeme')" && \
+    #Rscript -e "remotes::install_github('privefl/bigsnpr')" && \     #LDpred, is now on cran so gets installed with standard packages
+    #Rscript -e "remotes::install_github('leeshawn/MetaSKAT')" && \  #is now on cran so gets installed with standard packages
+    Rscript -e "remotes::install_github('DudbridgeLab/avengeme')" && \  #AVENGEME is a package for polygenic scoring analysis
     Rscript -e "remotes::install_github('MathiasHarrer/dmetar')" && \
     Rscript -e "remotes::install_github('kassambara/easyGgplot2')" && \
     Rscript -e "remotes::install_github('https://github.com/josefin-werme/LAVA.git')" && \
     #Install postgwas from GitHub via devtools:
     #setRepositories(ind = 1:6)
-    #SAIGE is an R package with Scalable and Accurate Implementation of Generalized mixed model (Chen, H. et al. 2016). It accounts for sample relatedness and is feasible for genetic association tests in large cohorts and biobanks (N > 400,000).
-    Rscript -e "remotes::install_github('leeshawn/MetaSKAT')" && \
-    Rscript -e "remotes::install_github('weizhouUMICH/SAIGE')" && \
-    Rscript -e "remotes::install_github('https://github.com/privefl/bigsnpr.git')" && \     #LDpred - R-based
+    Rscript -e "remotes::install_github('weizhouUMICH/SAIGE')" && \ #SAIGE is an R package with Scalable and Accurate Implementation of Generalized mixed model.
     Rscript -e "remotes::install_github('merns/postgwas')" && \
     Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')" && \
     Rscript -e "remotes::install_github('ozancinar/poolR')" && \
