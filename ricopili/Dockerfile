@@ -30,7 +30,7 @@ RUN apt-get install r-cran-rjava -y
 
 RUN R -e 'install.packages(c("devtools", "remotes", "RcppEigen"), repos = "http://cran.rstudio.com/")'
 RUN R -e 'install.packages("tidyverse", dependencies = TRUE, repos = "http://cran.rstudio.com/")'
-RUN R -e 'install.packages("RSQLite", dependencies = TRUE, repos = "http://cran.rstudio.com/")'
+RUN R -e 'install.packages(c("RSQLite","dbplyr","ggplot2"), dependencies = TRUE, repos = "http://cran.rstudio.com/")'
 
 #Get Linux OS flavor:
 #RUN cat /etc/os-release
@@ -72,17 +72,30 @@ RUN export PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Mi
 # create personal library & add to the path
 RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
+    #Standard packages
+    Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'gwasrapidd', 'haven', 'igraph', 'jpeg', 'lattice'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('mvoutlier', 'qqman', 'rsq', 'xlsx', 'xlsxjars'), repos='http://cran.rstudio.com/')" && \
+    #Bioconductor packages
     Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
+    Rscript -e "BiocManager::install('AnnotationDbi')" && \
     Rscript -e "BiocManager::install('ASSET')" && \
     Rscript -e "BiocManager::install('gwascat')" && \
     Rscript -e "BiocManager::install('snpStats')" && \  
     #install snpStats first otherwise LAVA install won't work: dependency ‘snpStats’ is not available for package ‘LAVA’
+    #GitHub packages
     #Sys.unsetenv("GITHUB_PAT")
     #Rscript -e "remotes::install_github('kenhanscombe/ukbtools', dependencies = TRUE)" && \    #is now on cran so gets installed with standard packages
+    #Rscript -e "remotes::install_github('ramiromagno/gwasrapidd')" && \    #is now on cran so gets installed with standard packages
     Rscript -e "remotes::install_github('DudbridgeLab/avengeme')" && \
     Rscript -e "remotes::install_github('MathiasHarrer/dmetar')" && \
     Rscript -e "remotes::install_github('kassambara/easyGgplot2')" && \
-    Rscript -e "remotes::install_github('ramiromagno/gwasrapidd')" && \
     Rscript -e "remotes::install_github('https://github.com/josefin-werme/LAVA.git')" && \
     #Install postgwas from GitHub via devtools:
     #setRepositories(ind = 1:6)
@@ -93,16 +106,6 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e "remotes::install_github('merns/postgwas')" && \
     Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')" && \
     Rscript -e "remotes::install_github('ozancinar/poolR')" && \
-    #Standard packages
-    Rscript -e "install.packages(c('corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'doBy'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('gdata', 'ggcorrplot', 'ggplot2', 'gtools', 'haven', 'igraph', 'jpeg', 'lattice'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('lubridate', 'meta', 'metafor', 'OpenMx', 'pheatmap', 'plyr', 'png', 'psych'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('randomForest', 'RColorBrewer', 'readxl', 'remotes', 'reshape', 'reshape2'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('rmarkdown', 'scatterplot3d', 'scales', 'sem', 'semTools', 'stringr'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('sysfonts', 'systemfonts', 'tibble', 'tidyr', 'ukbtools', 'VennDiagram'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('viridis', 'viridisLite', 'vroom', 'writexl', 'WriteXLS', 'xtable'), repos='http://cran.rstudio.com/')" && \
-    Rscript -e "install.packages(c('mvoutlier', 'qqman', 'rsq', 'xlsx', 'xlsxjars'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "installed.packages(); .libPaths(); .libPaths( c( .libPaths(), '/ricopili/dependencies/R_packages', '/usr/local/lib/R/site-library') )"
 
 #RUN Rscript -e 'system("sudo apt-get install -y libxml2-dev")' && \
