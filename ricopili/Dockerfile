@@ -127,17 +127,17 @@ RUN curl -Lo /tmp/bedtools-2.30.0.tgz https://github.com/arq5x/bedtools2/release
     tar zxvf /tmp/bedtools-2.30.0.tgz -C /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm /tmp/bedtools-2.30.0.tgz 
-RUN git clone https://github.com/vcftools/vcftools.git /tmp/ && \
+RUN cd /tmp/ && git clone https://github.com/vcftools/vcftools.git && \
     cd /tmp/vcftools && ./autogen.sh && ./configure && make && make install && \
     cp -r /tmp/vcftools /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm -r /tmp/vcftools 
-RUN git clone https://github.com/fhormoz/caviar.git /tmp/ && \
+RUN cd /tmp/ && git clone https://github.com/fhormoz/caviar.git && \
     cd /tmp/caviar/CAVIAR-C++ && make && make install && \
     cp -r /tmp/caviar /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm -r /tmp/caviar   
-RUN git clone https://github.com/gkichaev/PAINTOR_V3.0.git /tmp/ && \
+RUN cd /tmp/ && git clone https://github.com/gkichaev/PAINTOR_V3.0.git && \
     cd /tmp/PAINTOR_V3.0 && bash install.sh && \
     cp -r /tmp/PAINTOR_V3.0 /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
@@ -172,21 +172,21 @@ RUN curl -Lo /tmp/mach_1.0.18.tgz http://csg.sph.umich.edu/abecasis/MaCH/downloa
     rm /tmp/mach_1.0.18.tgz
 
 #MiXeR - (was MATLAB and) Python-based 
-RUN git clone --recurse-submodules -j8 https://github.com/precimed/mixer.git /tmp/ && \
+RUN cd /tmp/ && git clone --recurse-submodules -j8 https://github.com/precimed/mixer.git && \
     mkdir mixer/src/build && cd mixer/src/build && \
     cmake .. && make bgmg -j16 && \                                # if you use GCC compiler
     #CC=icc CXX=icpc cmake .. && make bgmg -j16 && \                # if you use Intel compiler
     #cmake .. -DBOOST_ROOT=$HOME/boost_1_69_0 && make bgmg -j16 && \  # if you use locally compiled boost
     cp -r /tmp/mixer /ricopili/dependencies/ 
 #pleiofdr - MATLAB and Python-based
-RUN git clone https://github.com/precimed/pleiofdr.git /tmp/ && \
+RUN cd /tmp/ && git clone https://github.com/precimed/pleiofdr.git && \
     cd /tmp/pleiofdr && \
     wget https://precimed.s3-eu-west-1.amazonaws.com/pleiofdr/pleioFDR_demo_data.tar.gz && \
     tar -xzvf pleioFDR_demo_data.tar.gz && \
     #matlab -nodisplay -nosplash < runme.m
     cp -r /tmp/pleiofdr /ricopili/dependencies/ 
 #mostest - MATLAB and Python-based
-RUN git clone https://github.com/precimed/mostest.git /tmp/ && \
+RUN cd /tmp/ && git clone https://github.com/precimed/mostest.git && \
     cd /tmp/mostest && \
     cp -r /tmp/mostest /ricopili/dependencies/ 
 
