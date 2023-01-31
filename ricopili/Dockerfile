@@ -4,7 +4,8 @@ LABEL org.opencontainers.image.source="https://github.com/gblokland/jupyterlab"
 
 WORKDIR /root
 
-FROM rocker/rstudio:4.0.0
+FROM rocker/rstudio:latest
+#FROM rocker/rstudio:4.0.0
 #FROM rocker/rstudio-stable:3.4.4 #this R is version 3.3.3, several packages need at least 3.5 or 3.6
 #FROM rocker/r-base:4.2.2
 
@@ -73,6 +74,8 @@ RUN export PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Mi
 
 RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
+    Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
+    Rscript -e "BiocManager::install('AnnotationDbi')" && \
     #Standard packages
     Rscript -e "install.packages(c('bigsnpr', 'corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'pbkrtest', 'doBy'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter'), repos='http://cran.rstudio.com/')" && \
@@ -87,8 +90,6 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
 RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
     #Bioconductor packages
-    Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
-    Rscript -e "BiocManager::install('AnnotationDbi')" && \
     Rscript -e "BiocManager::install('ASSET')" && \
     Rscript -e "BiocManager::install('gwascat')" && \
     Rscript -e "BiocManager::install('snpStats')" && \
