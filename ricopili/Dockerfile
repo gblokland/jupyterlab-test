@@ -139,7 +139,7 @@ RUN cd /tmp/ && git clone https://github.com/gkichaev/PAINTOR_V3.0.git && \
     chmod 755 /ricopili/dependencies/ && \
     rm -r /tmp/PAINTOR_V3.0 
 RUN curl -Lo /tmp/gcta-1.94.1.zip https://yanglab.westlake.edu.cn/software/gcta/bin/gcta-1.94.1-linux-kernel-3-x86_64.zip && \
-    unzip /tmp/gcta-1.94.1.zip -C /ricopili/dependencies/ && \
+    unzip /tmp/gcta-1.94.1.zip -d /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm /tmp/gcta-1.94.1.zip 
 RUN curl -Lo /tmp/locuszoom_1.3.tgz https://statgen.sph.umich.edu/locuszoom/download/locuszoom_1.3.tgz && \
@@ -151,7 +151,7 @@ RUN curl -Lo /tmp/finemap_v1.1.tgz http://www.christianbenner.com/finemap_v1.1_x
     chmod 755 /ricopili/dependencies/ && \
     rm /tmp/finemap_v1.1.tgz 
 RUN curl -Lo /tmp/magma_v1.10.zip https://ctg.cncr.nl/software/MAGMA/prog/magma_v1.10.zip && \
-    unzip /tmp/magma_v1.10.zip -C /ricopili/dependencies/ && \
+    unzip /tmp/magma_v1.10.zip -d /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm /tmp/magma_v1.10.zip 
 RUN curl -Lo /tmp/annovar.tgz http://www.openbioinformatics.org/annovar/download/0wgxR2rIVP/annovar.latest.tar.gz && \
@@ -159,7 +159,7 @@ RUN curl -Lo /tmp/annovar.tgz http://www.openbioinformatics.org/annovar/download
     chmod 755 /ricopili/dependencies/ && \
     rm /tmp/annovar.tgz 
 RUN curl -Lo /tmp/PRSice_2.3.5.zip https://github.com/choishingwan/PRSice/releases/download/2.3.5/PRSice_linux.zip && \
-    unzip /tmp/PRSice_2.3.5.zip -C /ricopili/dependencies/ && \
+    unzip /tmp/PRSice_2.3.5.zip -d /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm /tmp/PRSice_2.3.5.zip
 RUN curl -Lo /tmp/mach_1.0.18.tgz http://csg.sph.umich.edu/abecasis/MaCH/download/mach.1.0.18.Linux.tgz && \
