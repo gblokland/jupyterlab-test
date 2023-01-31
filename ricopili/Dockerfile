@@ -77,7 +77,7 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
     Rscript -e "BiocManager::install('AnnotationDbi')" && \
     #Standard packages
-    Rscript -e "install.packages(c('bigsnpr', 'corrgram', 'corrplot', 'd3heatmap', 'data.table', 'DescTools', 'pbkrtest', 'doBy'), repos='http://cran.rstudio.com/')" && \
+    Rscript -e "install.packages(c('bigsnpr', 'corrgram', 'corrplot', 'cowplot', 'd3heatmap', 'data.table', 'DescTools', 'pbkrtest', 'doBy'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('randomForest', 'RColorBrewer', 'readxl', 'reshape', 'reshape2'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('gdata', 'ggcorrplot', 'ggplot2', 'ggstats', 'gtools', 'gwasrapidd', 'haven', 'igraph', 'jpeg', 'lattice'), repos='http://cran.rstudio.com/')" && \
@@ -133,11 +133,6 @@ RUN cd /tmp/ && git clone https://github.com/vcftools/vcftools.git && \
     cp -r /tmp/vcftools /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm -r /tmp/vcftools 
-RUN cd /tmp/ && git clone https://github.com/fhormoz/caviar.git && \
-    cd /tmp/caviar/CAVIAR-C++ && make && make install && \
-    cp -r /tmp/caviar /ricopili/dependencies/ && \
-    chmod 755 /ricopili/dependencies/ && \
-    rm -r /tmp/caviar   
 RUN cd /tmp/ && git clone https://github.com/gkichaev/PAINTOR_V3.0.git && \
     cd /tmp/PAINTOR_V3.0 && bash install.sh && \
     cp -r /tmp/PAINTOR_V3.0 /ricopili/dependencies/ && \
@@ -171,25 +166,30 @@ RUN curl -Lo /tmp/mach_1.0.18.tgz http://csg.sph.umich.edu/abecasis/MaCH/downloa
     tar zxvf /tmp/mach_1.0.18.tgz -C /ricopili/dependencies/ && \
     chmod 755 /ricopili/dependencies/ && \
     rm /tmp/mach_1.0.18.tgz
+RUN cd /tmp/ && git clone https://github.com/fhormoz/caviar.git
+    #cd /tmp/caviar/CAVIAR-C++ && make && make install && \
+    #cp -r /tmp/caviar /ricopili/dependencies/ && \
+    #chmod 755 /ricopili/dependencies/ && \
+    #rm -r /tmp/caviar   
 
 #MiXeR - (was MATLAB and) Python-based 
 RUN cd /tmp/ && git clone --recurse-submodules -j8 https://github.com/precimed/mixer.git && \
     mkdir mixer/src/build && cd mixer/src/build && \
-    cmake .. && make bgmg -j16 && \                                # if you use GCC compiler
+    #cmake .. && make bgmg -j16 && \                                # if you use GCC compiler
     #CC=icc CXX=icpc cmake .. && make bgmg -j16 && \                # if you use Intel compiler
     #cmake .. -DBOOST_ROOT=$HOME/boost_1_69_0 && make bgmg -j16 && \  # if you use locally compiled boost
-    cp -r /tmp/mixer /ricopili/dependencies/ 
+    cp -r /tmp/mixer /ricopili/dependencies/ && rm -r /tmp/mixer
 #pleiofdr - MATLAB and Python-based
 RUN cd /tmp/ && git clone https://github.com/precimed/pleiofdr.git && \
     cd /tmp/pleiofdr && \
     wget https://precimed.s3-eu-west-1.amazonaws.com/pleiofdr/pleioFDR_demo_data.tar.gz && \
     tar -xzvf pleioFDR_demo_data.tar.gz && \
     #matlab -nodisplay -nosplash < runme.m
-    cp -r /tmp/pleiofdr /ricopili/dependencies/ 
+    cp -r /tmp/pleiofdr /ricopili/dependencies/ && rm -r /tmp/pleiofdr
 #mostest - MATLAB and Python-based
 RUN cd /tmp/ && git clone https://github.com/precimed/mostest.git && \
     cd /tmp/mostest && \
-    cp -r /tmp/mostest /ricopili/dependencies/ 
+    cp -r /tmp/mostest /ricopili/dependencies/ && rm -r /tmp/mostest
 
 #Original dependencies
 ENV PATH=/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
