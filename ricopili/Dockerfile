@@ -44,10 +44,9 @@ RUN export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfi
 RUN echo $PKG_CONFIG_PATH
 
     
-RUN apt-get update && \
-    apt-get install -y python3-pip python3-dev && pip3 install --upgrade pip && \
-    pip3 install notebook jupyterlab && \
-    sudo chown $(whoami):$(whoami) /.local
+RUN apt-get update && apt-get install -y python3-pip python3-dev && pip3 install --upgrade pip && pip3 install notebook jupyterlab 
+    #&& \
+    #sudo chown $(whoami):$(whoami) /.local
 
 #RUN apt-get update && \
     #apt-get install -y --no-install-recommends r-base && \
