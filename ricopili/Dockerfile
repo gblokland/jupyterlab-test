@@ -46,7 +46,8 @@ RUN echo $PKG_CONFIG_PATH
     
 RUN apt-get update && \
     apt-get install -y python3-pip python3-dev && pip3 install --upgrade pip && \
-    pip3 install notebook jupyterlab
+    pip3 install notebook jupyterlab && \
+    sudo chown $(whoami):$(whoami) /.local
 
 #RUN apt-get update && \
     #apt-get install -y --no-install-recommends r-base && \
@@ -76,6 +77,10 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
     Rscript -e 'install.packages("BiocManager", repos="https://cloud.r-project.org")' && \
     Rscript -e "BiocManager::install('AnnotationDbi')" && \
+    Rscript -e "BiocManager::install('biomaRt')" && \
+    Rscript -e "BiocManager::install('org.Hs.eg.db')" && \
+    Rscript -e "BiocManager::install('Rgraphviz')" && \
+    Rscript -e "BiocManager::install('RBGL')" && \
     #Standard packages
     Rscript -e "install.packages(c('bigsnpr', 'corrgram', 'corrplot', 'cowplot', 'd3heatmap', 'data.table', 'DescTools', 'pbkrtest', 'doBy'), repos='http://cran.rstudio.com/')" && \
     Rscript -e "install.packages(c('dplyr', 'extrafont', 'extrafontdb', 'foreign', 'forestplot', 'forestploter'), repos='http://cran.rstudio.com/')" && \
@@ -100,6 +105,7 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     #ukbtools gwasrapidd bigsnpr MetaSKAT poolR are now on cran so they get installed with standard packages
     Rscript -e "remotes::install_github('DudbridgeLab/avengeme')" && \
     #AVENGEME is a package for polygenic scoring analysis
+    Rscript -e "remotes::install_github('https://github.com/GenABEL-Project/GenABEL.git')" && \
     Rscript -e "remotes::install_github('MathiasHarrer/dmetar')" && \
     Rscript -e "remotes::install_github('kassambara/easyGgplot2')" && \
     Rscript -e "remotes::install_github('https://github.com/josefin-werme/LAVA.git')" && \
@@ -188,7 +194,6 @@ RUN cd /tmp/ && git clone https://github.com/precimed/pleiofdr.git && \
     cp -r /tmp/pleiofdr /ricopili/dependencies/ && rm -r /tmp/pleiofdr
 #mostest - MATLAB and Python-based
 RUN cd /tmp/ && git clone https://github.com/precimed/mostest.git && \
-    cd /tmp/mostest && \
     cp -r /tmp/mostest /ricopili/dependencies/ && rm -r /tmp/mostest
 
 #Original dependencies
