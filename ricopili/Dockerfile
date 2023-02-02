@@ -61,4 +61,4 @@ ENV PATH=/ricopili/dependencies/bedtools-2.30.0:/ricopili/dependencies/vcftools:
 
 EXPOSE 8888
 ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
-CMD ["/bin/bash"]
+#CMD ["/bin/bash"]
