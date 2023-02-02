@@ -54,23 +54,20 @@ RUN apt-get update && apt-get install -y python3-pip python3-dev && pip3 install
     #apt-get install -y --no-install-recommends r-base-core=4.1.2-1ubuntu2 r-base-html=4.1.2-1ubuntu2 r-doc-html=4.1.2-1ubuntu2 r-base-dev=4.1.2-1ubuntu2 && \
 
 #For debugging: if errors occur that complain about not being able to find {package}.pc files, check this list if they are there:
-RUN ls /usr/lib/x86_64-linux-gnu/pkgconfig/
-RUN ls /usr/lib/pkgconfig/
-RUN cp /usr/lib/x86_64-linux-gnu/pkgconfig/*.pc /usr/lib/pkgconfig/
-RUN ls /usr/lib/pkgconfig/
-RUN ls /usr/local/lib/
+#RUN ls /usr/lib/x86_64-linux-gnu/pkgconfig/
+#RUN ls /usr/lib/pkgconfig/
+#RUN cp /usr/lib/x86_64-linux-gnu/pkgconfig/*.pc /usr/lib/pkgconfig/
+#RUN ls /usr/lib/pkgconfig/
+#RUN ls /usr/local/lib/
 
-#RUN cd /usr/local/lib/ && wget ftp://xmlsoft.org/libxml2/libxml2-2.9.2.tar.gz && tar -xvf libxml2-2.9.2.tar.gz && cd libxml2-2.9.2 && ./configure --prefix=/usr --disable-static --with-history && make && sudo make install
 
 RUN mkdir -p /ricopili/dependencies/R_packages && \
     chmod -R 755 /ricopili/dependencies/R_packages
 
-#, lib='/root/R/x86_64-pc-linux-gnu-library/3.6'
 ENV PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH
 ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig 
 RUN export PATH=/usr/local/lib:/usr/bin:/usr/local/bin:/ricopili/dependencies/Minimac3:/ricopili/dependencies/bcftools:/ricopili/dependencies/bgzip:/ricopili/dependencies/eagle:/ricopili/dependencies/eigensoft/EIG-6.1.4/bin:/ricopili/dependencies/impute_v2:/ricopili/dependencies/impute_v4:/ricopili/dependencies/latex:/ricopili/dependencies/ldsc:/ricopili/dependencies/liftover:/ricopili/dependencies/metal:/ricopili/dependencies/shapeit:/ricopili/dependencies/shapeit3:/ricopili/dependencies/tabix:$PATH  && \
     export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/bin/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig
-
 
 RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))' && \
@@ -114,19 +111,6 @@ RUN Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)' && \
     Rscript -e "remotes::install_github('merns/postgwas')" && \
     Rscript -e "remotes::install_github('MRCIEU/TwoSampleMR')" && \
     Rscript -e "installed.packages(); .libPaths(); .libPaths( c( .libPaths(), '/ricopili/dependencies/R_packages', '/usr/local/lib/R/site-library') )"
-
-#RUN Rscript -e 'system("sudo apt-get install -y libxml2-dev")' && \
-    #Rscript -e 'system("sudo apt-get install -y libfontconfig1-dev")' && \
-    #Rscript -e 'Sys.setenv(PKG_CONFIG_PATH=paste(Sys.getenv('PKG_CONFIG_PATH'),paste(.libPaths(),'/usr/lib/x86_64-linux-gnu/pkgconfig',sep='/',collapse=':'),sep=':'))' && \
-    #Rscript -e 'Sys.setenv(PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig")' && \
-    #Rscript -e 'system("echo $PKG_CONFIG_PATH")' && \
-    #Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")' && \
-    #Rscript -e 'remotes::install_github(c("r-lib/xml2","r-lib/systemfonts","rstudio/httpuv","r-lib/devtools"))'
-#RUN Rscript -e "install.packages('cmutils', repos = NULL, type = 'source')"
-#RUN Rscript -e 'install.packages("xml2", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
-#RUN Rscript -e 'install.packages("systemfonts", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
-#RUN Rscript -e 'install.packages("httpuv", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
-#RUN Rscript -e 'install.packages("devtools", configure.vars="INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/pkgconfig", repos="https://cloud.r-project.org")'
 
 #Additional genetics tools
 RUN curl -Lo /tmp/bedtools-2.30.0.tgz https://github.com/arq5x/bedtools2/releases/download/v2.30.0/bedtools-2.30.0.tar.gz && \
